@@ -8,41 +8,69 @@
 #include "Driver_USART.h"               		// ::CMSIS Driver:USART
 #include <stdlib.h>
 
+/*----------------------------------------------------------------------------
+ * Define de code pour DFPlayer
+ *---------------------------------------------------------------------------*/
 
 #define PLAY 											(0x0D)		// Play
 #define PAUSE 										(0x0E)		// Commande pour mettre en pause la piste Audio
 #define SPECIFY_VOLUME 						(0x06)		// Commande pour s?l?ctioner un volume sp?cifique
 #define REPEAT_PLAY 							(0x11)		// Jouer en boucle ou ne plus jouer en boucle une piste audio
 
+/*----------------------------------------------------------------------------
+ * Driver UART Extern
+ *---------------------------------------------------------------------------*/
 
 extern ARM_DRIVER_USART Driver_USART0;
 extern ARM_DRIVER_USART Driver_USART1;
 extern ARM_DRIVER_USART Driver_USART2;
+
+/*----------------------------------------------------------------------------
+ * Fonction Init UART & DFPlayer
+ *---------------------------------------------------------------------------*/
 
 void Init_UART ( void );
 
 void LinkDFPlayer ( void );
 void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, unsigned const char param2 );
 
+char *Read_RFID ( void );
+
+/*----------------------------------------------------------------------------
+ * Fonction Tempos
+ *---------------------------------------------------------------------------*/
+
 void tempo ( int ms );
+
+/*----------------------------------------------------------------------------
+ * Task ID & DEF - RTOS
+ *---------------------------------------------------------------------------*/
 
 void TaskRFID ( void const * argument );
 void TaskDFPlayer ( void const * argument );
 void TaskMoteur (void const * argument );
 
-char *Read_RFID ( void );
-
 
 osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR;
+
+
 
 osThreadDef ( TaskRFID, osPriorityNormal, 1, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
 osThreadDef ( TaskMoteur, osPriorityNormal, 1, 0);
 
+/*----------------------------------------------------------------------------
+ * Task ID & DEF - MUTEX
+ *---------------------------------------------------------------------------*/
+
 osMutexId ID_Mutex_PWM, ID_Mutex_UART;
 
 osMutexDef ( Mutex_PWM );
 osMutexDef ( Mutex_UART );
+
+/*----------------------------------------------------------------------------
+ * Task ID & DEF - MAILS BOXS
+ *---------------------------------------------------------------------------*/
 
 osMailQId ID_RFID2DFPlayer, ID_ETAT_MOT, ID_Lumiere2DFPlayer, ID_Manette2DFPlayer;
 
@@ -73,6 +101,10 @@ int main (void) {
 	
 	return 0;
 }
+
+/*----------------------------------------------------------------------------
+ * Task - DFPlayer
+ *---------------------------------------------------------------------------*/
 
 void TaskDFPlayer ( void const * argument ){
 	
@@ -143,6 +175,10 @@ void TaskDFPlayer ( void const * argument ){
 	}
 }
 
+/*----------------------------------------------------------------------------
+ * Task RFID
+ *---------------------------------------------------------------------------*/
+
 void TaskRFID ( void const * argument ){
 	
 	char BADGE[14] = {2,48,56,48,48,56,67,50,51,69,57,52,69,3};
@@ -187,9 +223,17 @@ void TaskRFID ( void const * argument ){
 	}
 }
 
+/*----------------------------------------------------------------------------
+ * Task MOTEUR
+ *---------------------------------------------------------------------------*/
+
 void TaskMoteur ( void const * argument ) {
 	
 }
+
+/*----------------------------------------------------------------------------
+ * Fonction D'Init des ports 0 - 1 - 2 de l' UART
+ *---------------------------------------------------------------------------*/
 
 void Init_UART ( void ) {
 	
@@ -235,6 +279,10 @@ void Init_UART ( void ) {
 	
 }
 
+/*----------------------------------------------------------------------------
+ * Fonction liant de micro au DFPlayer
+ *---------------------------------------------------------------------------*/
+
 void LinkDFPlayer ( void ){
 	
 	unsigned char packet[10] = {0x7E,0xFF, 0x06, 0x3F, 0x00, 0x00, 0x00, 0xFE, 0xBC, 0xEF};
@@ -243,6 +291,10 @@ void LinkDFPlayer ( void ){
 	Driver_USART0.Send(packet,10);
 }
 
+/*----------------------------------------------------------------------------
+ * Fonction d'Envoie de Commande au DFPlayer
+ *---------------------------------------------------------------------------*/
+
 void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, unsigned const char param2 ){
 	
 	
@@ -250,7 +302,7 @@ void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, 
 	unsigned char chkb2; 																																		//checksum low
 	int checksum; 																																					//checksum pour calculer
 	
-  unsigned char packet[10]; 																															//trame à envoyer
+  unsigned char packet[10]; 																															//trame Ã  envoyer
 	packet[0] = 0x7E; 																																			//start 
 	packet[1] = 0xFF; 																																			//version
 	packet[2] = 0x06; 																																			//taille de la data (toujours 06)
@@ -273,6 +325,10 @@ void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, 
 	
 }
 
+/*----------------------------------------------------------------------------
+ * Fonction de Delais
+ *---------------------------------------------------------------------------*/
+
 void tempo ( int ms ) {
 	
 	int j;
@@ -280,10 +336,14 @@ void tempo ( int ms ) {
 
 }
 
+/*----------------------------------------------------------------------------
+ * Fonction de Lecture du RFID avec Retour de Tableau
+ *---------------------------------------------------------------------------*/
+
 char *Read_RFID ( void ) {
 	char *buff = (char *)malloc(14);
 	
-	Driver_USART1.Receive(buff,14); // la fonction remplira jusqu'à 16 cases
+	Driver_USART1.Receive(buff,14); // la fonction remplira jusqu'Ã  16 cases
 	while (Driver_USART1.GetRxCount() <14 ) ;
 	
 	return buff;
