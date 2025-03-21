@@ -8,69 +8,49 @@
 #include "Driver_USART.h"               		// ::CMSIS Driver:USART
 #include <stdlib.h>
 
-/*----------------------------------------------------------------------------
- * Define de code pour DFPlayer
- *---------------------------------------------------------------------------*/
+float servo_duty;
 
 #define PLAY 											(0x0D)		// Play
 #define PAUSE 										(0x0E)		// Commande pour mettre en pause la piste Audio
 #define SPECIFY_VOLUME 						(0x06)		// Commande pour s?l?ctioner un volume sp?cifique
 #define REPEAT_PLAY 							(0x11)		// Jouer en boucle ou ne plus jouer en boucle une piste audio
 
-/*----------------------------------------------------------------------------
- * Driver UART Extern
- *---------------------------------------------------------------------------*/
+#define __50HZ_FRQ_MR__ 99999.0
 
 extern ARM_DRIVER_USART Driver_USART0;
 extern ARM_DRIVER_USART Driver_USART1;
 extern ARM_DRIVER_USART Driver_USART2;
-
-/*----------------------------------------------------------------------------
- * Fonction Init UART & DFPlayer
- *---------------------------------------------------------------------------*/
 
 void Init_UART ( void );
 
 void LinkDFPlayer ( void );
 void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, unsigned const char param2 );
 
-char *Read_RFID ( void );
-
-/*----------------------------------------------------------------------------
- * Fonction Tempos
- *---------------------------------------------------------------------------*/
-
 void tempo ( int ms );
-
-/*----------------------------------------------------------------------------
- * Task ID & DEF - RTOS
- *---------------------------------------------------------------------------*/
 
 void TaskRFID ( void const * argument );
 void TaskDFPlayer ( void const * argument );
 void TaskMoteur (void const * argument );
 
+char *Read_RFID ( void );
+
+void Mot_Initialize ( void );
+void Servo_Mot_Initialize ( void );
+void Mot_Set_Duty ( float duty );
+void Servo_Mot_Set_Duty ( float duty );
+void TIMER0_IRQHandler ( void );
+
 
 osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR;
-
-
 
 osThreadDef ( TaskRFID, osPriorityNormal, 1, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
 osThreadDef ( TaskMoteur, osPriorityNormal, 1, 0);
 
-/*----------------------------------------------------------------------------
- * Task ID & DEF - MUTEX
- *---------------------------------------------------------------------------*/
-
 osMutexId ID_Mutex_PWM, ID_Mutex_UART;
 
 osMutexDef ( Mutex_PWM );
 osMutexDef ( Mutex_UART );
-
-/*----------------------------------------------------------------------------
- * Task ID & DEF - MAILS BOXS
- *---------------------------------------------------------------------------*/
 
 osMailQId ID_RFID2DFPlayer, ID_ETAT_MOT, ID_Lumiere2DFPlayer, ID_Manette2DFPlayer;
 
@@ -101,10 +81,6 @@ int main (void) {
 	
 	return 0;
 }
-
-/*----------------------------------------------------------------------------
- * Task - DFPlayer
- *---------------------------------------------------------------------------*/
 
 void TaskDFPlayer ( void const * argument ){
 	
@@ -137,14 +113,14 @@ void TaskDFPlayer ( void const * argument ){
 		Lumiere = * Reception_Lumiere;
 		osMailFree(ID_ETAT_MOT, Reception_Lumiere);
 		
-		if ( RFID == 1 ){
+		if ( 1 == RFID ){
 			osMutexWait(ID_Mutex_UART, osWaitForever);
 			Send_DFPlayer_Command(0x03, 0x01, 0x01);
 			tempo(5);
 			osMutexRelease(ID_Mutex_UART);
 		}
 		
-		if ( Manette == 1 ){
+		if ( 1 == Manette ){
 			osMutexWait(ID_Mutex_UART, osWaitForever);
 			Send_DFPlayer_Command( 0x03, 0x01, 0x02);
 			tempo(5);
@@ -152,21 +128,21 @@ void TaskDFPlayer ( void const * argument ){
 			osMutexRelease(ID_Mutex_UART);
 		}
 		
-		if ( Moteur == 1) {
+		if ( 1 == Moteur) {
 			osMutexWait(ID_Mutex_UART, osWaitForever);
 			Send_DFPlayer_Command( 0x03, 0x01, 0x03);
 			tempo(5);
 			osMutexRelease(ID_Mutex_UART);
 		}
 		
-		if ( Lumiere == 1 ) {
+		if ( 1 == Lumiere ) {
 			osMutexWait(ID_Mutex_UART, osWaitForever);
 			Send_DFPlayer_Command( 0x03, 0x01, 0x04);
 			tempo(5);
 			osMutexRelease(ID_Mutex_UART);
 		}
 		
-		if ( Manette == 2) {
+		if ( 2 == Manette ) {
 			osMutexWait(ID_Mutex_UART, osWaitForever);
 			Send_DFPlayer_Command( PAUSE, 0x00, 0x00);
 			tempo(5);
@@ -174,10 +150,6 @@ void TaskDFPlayer ( void const * argument ){
 		}
 	}
 }
-
-/*----------------------------------------------------------------------------
- * Task RFID
- *---------------------------------------------------------------------------*/
 
 void TaskRFID ( void const * argument ){
 	
@@ -205,7 +177,7 @@ void TaskRFID ( void const * argument ){
 		
 		
 		
-		if(strcmp(BADGE,Lecture)==0){
+		if( 0 == strcmp(BADGE,Lecture)){
 			
 			Envoie = osMailAlloc(ID_RFID2DFPlayer, osWaitForever);
 			* Envoie = 1;
@@ -214,7 +186,7 @@ void TaskRFID ( void const * argument ){
 			osSignalWait( 0x0001, osWaitForever);
 		}
 		
-		if ( ETAT_MOT == 1 ){
+		if ( 1 == ETAT_MOT ){
 			
 			ETAT_MOT = 0;
 			osSignalWait( 0x0001, osWaitForever);
@@ -223,17 +195,18 @@ void TaskRFID ( void const * argument ){
 	}
 }
 
-/*----------------------------------------------------------------------------
- * Task MOTEUR
- *---------------------------------------------------------------------------*/
-
 void TaskMoteur ( void const * argument ) {
 	
+	Servo_Mot_Initialize();
+	Mot_Initialize();
+	
+	Mot_Set_Duty(0.9);
+	LPC_PWM1->TCR = 1;  /*validation de timer  et reset counter */	
+	Servo_Mot_Set_Duty(0.1);
+	
+	while (1);
+	
 }
-
-/*----------------------------------------------------------------------------
- * Fonction D'Init des ports 0 - 1 - 2 de l' UART
- *---------------------------------------------------------------------------*/
 
 void Init_UART ( void ) {
 	
@@ -279,21 +252,13 @@ void Init_UART ( void ) {
 	
 }
 
-/*----------------------------------------------------------------------------
- * Fonction liant de micro au DFPlayer
- *---------------------------------------------------------------------------*/
-
 void LinkDFPlayer ( void ){
 	
 	unsigned char packet[10] = {0x7E,0xFF, 0x06, 0x3F, 0x00, 0x00, 0x00, 0xFE, 0xBC, 0xEF};
 	
-	while(Driver_USART0.GetStatus().tx_busy == 1);
+	while( 1 == Driver_USART0.GetStatus().tx_busy );
 	Driver_USART0.Send(packet,10);
 }
-
-/*----------------------------------------------------------------------------
- * Fonction d'Envoie de Commande au DFPlayer
- *---------------------------------------------------------------------------*/
 
 void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, unsigned const char param2 ){
 	
@@ -302,7 +267,7 @@ void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, 
 	unsigned char chkb2; 																																		//checksum low
 	int checksum; 																																					//checksum pour calculer
 	
-  unsigned char packet[10]; 																															//trame Ã  envoyer
+  unsigned char packet[10]; 																															//trame à envoyer
 	packet[0] = 0x7E; 																																			//start 
 	packet[1] = 0xFF; 																																			//version
 	packet[2] = 0x06; 																																			//taille de la data (toujours 06)
@@ -320,14 +285,10 @@ void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, 
 	packet[7] = chkb1;
 	packet[8] = chkb2;
 	packet[9] = 0xEF; 																																			//bit de stop
-  while(Driver_USART0.GetStatus().tx_busy == 1); 																					// attente buffer TX vide
+  while( 1 == Driver_USART0.GetStatus().tx_busy ); 																					// attente buffer TX vide
 	Driver_USART0.Send(packet,10); 																													//envoie du packet
 	
 }
-
-/*----------------------------------------------------------------------------
- * Fonction de Delais
- *---------------------------------------------------------------------------*/
 
 void tempo ( int ms ) {
 	
@@ -336,15 +297,71 @@ void tempo ( int ms ) {
 
 }
 
-/*----------------------------------------------------------------------------
- * Fonction de Lecture du RFID avec Retour de Tableau
- *---------------------------------------------------------------------------*/
-
 char *Read_RFID ( void ) {
 	char *buff = (char *)malloc(14);
 	
-	Driver_USART1.Receive(buff,14); // la fonction remplira jusqu'Ã  16 cases
-	while (Driver_USART1.GetRxCount() <14 ) ;
+	Driver_USART1.Receive(buff,14); // la fonction remplira jusqu'à 16 cases
+	while ( 14 < Driver_USART1.GetRxCount() ) ;
 	
 	return buff;
+}
+
+void Mot_Initialize ( void ) {
+	
+	LPC_SC->PCONP = LPC_SC->PCONP | 0x00000040;   // enable PWM1
+	LPC_PWM1->PR = 0;  // prescaler
+	LPC_PWM1->MR0 = 1249;    // MR0+1=100   la période de la PWM vaut 1ms
+	
+	LPC_PWM1->MCR = LPC_PWM1->MCR | 0x00000002; // Compteur relancé quand MR0 repasse à 0
+	LPC_PWM1->LER = LPC_PWM1->LER | 0x0000000F;  // ceci donne le droit de modifier dynamiquement la valeur du rapport cyclique
+																						 // bit 0 = MR0    bit 1 MR1 bit2 MR2 bit3 = MR3
+	LPC_PWM1->PCR = LPC_PWM1->PCR | 0x00000e00;  // autorise les sortie PWM1/2/3 bits 9, 10, 11
+	LPC_PINCON->PINSEL7 = LPC_PINCON->PINSEL7| 0x000C0000;
+	
+}
+
+void Servo_Mot_Initialize ( void ) {
+	
+	LPC_PINCON->PINSEL7 = LPC_PINCON->PINSEL7| 0x00200000;
+	LPC_TIM0->EMR=0x00C0; 
+	LPC_SC->PCONP = LPC_SC->PCONP | 0x00000002;   
+	LPC_TIM0->PR = 4;  // le registre PR prend la valeur du prescaler
+	LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*(1-servo_duty));
+	LPC_TIM0->MCR=LPC_TIM0->MCR | 0x00000003;
+	LPC_TIM0->TCR = 1;  
+	NVIC_SetPriority(TIMER0_IRQn,0); // TIMER0 (IRQ1) : interruption de priorité 0
+	NVIC_EnableIRQ(TIMER0_IRQn); // active les interruptions TIMER0
+	
+}
+
+void Mot_Set_Duty( float duty ) {
+	
+	LPC_PWM1->MR2 = (int)((float)(LPC_PWM1->MR0 + 1)*duty);
+
+}
+
+void Servo_Mot_Set_Duty( float duty ) {
+	
+	servo_duty = duty;
+
+}
+
+void TIMER0_IRQHandler ( void ) { // Fonction qui gère le pwm du servo moteur
+	
+	LPC_TIM0->IR = (1<<0); //baisse le drapeau dû à MR0
+	
+	if( (int) (__50HZ_FRQ_MR__*servo_duty) == LPC_TIM0->MR0 ){
+		
+		LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*(1-servo_duty));
+		
+	}
+	
+	else{
+		
+		LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*servo_duty);
+		
+	}
+	
+	LPC_TIM0->TCR = 1; 
+
 }
