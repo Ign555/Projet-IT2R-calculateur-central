@@ -5,14 +5,19 @@ float servo_duty = 0.5;
 void init_moteur(){
 	LPC_SC->PCONP = LPC_SC->PCONP | 0x00000040;   // enable PWM1
 	LPC_PWM1->PR = 0;  // prescaler
-	LPC_PWM1->MR0 = 1249;    // MR0+1=100   la période de la PWM vaut 1ms
+	LPC_PWM1->MR0 = 999;    // MR0+1=100   la période de la PWM vaut 50ms 20000hz 1249
 	
 	LPC_PWM1->MCR = LPC_PWM1->MCR | 0x00000002; // Compteur relancé quand MR0 repasse à 0
 	LPC_PWM1->LER = LPC_PWM1->LER | 0x0000000F;  // ceci donne le droit de modifier dynamiquement la valeur du rapport cyclique
 																						 // bit 0 = MR0    bit 1 MR1 bit2 MR2 bit3 = MR3
 	LPC_PWM1->PCR = LPC_PWM1->PCR | 0x00000e00;  // autorise les sortie PWM1/2/3 bits 9, 10, 11
 	LPC_PINCON->PINSEL7 = LPC_PINCON->PINSEL7| 0x000C0000;
-}
+	LPC_GPIO0->FIODIR2 = 0x03;
+	LPC_GPIO0->FIOPIN2 &= 0xFC;	
+	//LPC_GPIO0->FIODIR2 = 0x01;	
+	
+	LPC_PWM1->TCR = 1;  /*validation de timer  et reset counter */	
+}	
 void init_servo_moteur()
 {
 	LPC_PINCON->PINSEL7 = LPC_PINCON->PINSEL7| 0x00200000;
@@ -28,6 +33,23 @@ void init_servo_moteur()
 void moteur_set_duty(float duty){
 	LPC_PWM1->MR2 = (int)((float)(LPC_PWM1->MR0 + 1)*duty);
 }
+void moteur_set_direction(char dir)
+{
+		
+		if(dir==1){
+			LPC_GPIO0->FIOPIN2 |= 0x01;
+			LPC_GPIO0->FIOPIN2 &= 0xFD;	
+
+		}else{
+			LPC_GPIO0->FIOPIN2 |= 0x02;
+			LPC_GPIO0->FIOPIN2 &= 0xFE;	
+		}
+
+}	
+
+
+
+
 void servo_moteur_set_duty(float duty){
 	servo_duty = duty;
 }

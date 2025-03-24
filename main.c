@@ -1,6 +1,6 @@
-
-#include <LPC17xx.h>                    // Device header
+              // Device header
 #include "pwm_moteur.h"
+#include "GPIO_LPC17xx.h"
 
 
 int main(void)
@@ -8,26 +8,18 @@ int main(void)
 	init_servo_moteur();
 	init_moteur();
 	
-	moteur_set_duty(0.9);
-	LPC_PWM1->TCR = 1;  /*validation de timer  et reset counter */	
-	servo_moteur_set_duty(0.1);
-while(1)
+	servo_moteur_set_duty(0.075);
+	moteur_set_duty(0.7);
+	
+
+	while(1)
 {
+moteur_set_direction(0);
+
 }
 return(0);
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

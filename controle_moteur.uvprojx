@@ -452,6 +452,12 @@
           <targetInfo name="Target 1"/>
         </targetInfos>
       </component>
+      <component Cclass="Device" Cgroup="GPIO" Cvendor="Keil" Cversion="1.1.0" condition="LPC1700 CMSIS Device">
+        <package name="LPC1700_DFP" schemaVersion="1.7.28" url="https://www.keil.com/pack/" vendor="Keil" version="3.0.0"/>
+        <targetInfos>
+          <targetInfo name="Target 1"/>
+        </targetInfos>
+      </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="LPC17xx CMSIS Device ARMCC">
         <package name="LPC1700_DFP" schemaVersion="1.7.28" url="https://www.keil.com/pack/" vendor="Keil" version="3.0.0"/>
         <targetInfos>
