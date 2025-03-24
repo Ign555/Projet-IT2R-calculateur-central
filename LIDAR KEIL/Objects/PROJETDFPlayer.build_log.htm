@@ -21,18 +21,18 @@ Target DLL:      UL2CM3.DLL V1.156.1.0
 Dialog DLL:      TARMP1.DLL V1.24.0.0
  
 <h2>Project:</h2>
-U:\PROJET ESE\LIDAR\PROJETDFPlayer.uvprojx
-Project File Date:  02/13/2025
+U:\PROJET ESE\LIDAR KEIL\ProjetLIDAR.uvprojx
+Project File Date:  03/21/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling baseUART.c...
-baseUART.c(77): warning:  #111-D: statement is unreachable
+baseUART.c(37): warning:  #111-D: statement is unreachable
   	return 0;
 baseUART.c: 1 warning, 0 errors
 linking...
-Program Size: Code=8412 RO-data=704 RW-data=12 ZI-data=820  
+Program Size: Code=8480 RO-data=704 RW-data=12 ZI-data=820  
 ".\Objects\PROJETDFPlayer.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -46,17 +46,17 @@ Package Vendor: ARM
 
 Package Vendor: Keil
                 https://www.keil.com/pack/Keil.LPC1700_DFP.3.0.0.pack
-                Keil::Device:Startup:1.0.0
+                Keil::Device:GPDMA:1.4.0
                 NXP LPC1700 Series Device Support, Drivers and Examples for MCB1700 and LPC1788-32
-   * Component: Startup Version: 1.0.0
-   * Component: PIN Version: 1.0.0
-   * Component: USART Version: 2.13.0
    * Component: GPDMA Version: 1.4.0
    * Component: GPIO Version: 1.1.0
+   * Component: PIN Version: 1.0.0
+   * Component: Startup Version: 1.0.0
+   * Component: USART Version: 2.13.0
 
 <h2>Collection of Component include folders:</h2>
-  U:\PROJET ESE\LIDAR\RTE
-  U:\PROJET ESE\LIDAR\RTE\Device\LPC1768
+  U:\PROJET ESE\LIDAR KEIL\RTE
+  U:\PROJET ESE\LIDAR KEIL\RTE\Device\LPC1768
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include
   C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include
@@ -69,19 +69,6 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.3.0
 
-   * Component: Keil::Device:Startup:1.0.0
-      Source file:   Device\Source\system_LPC17xx.c
-      Include file:  Device\Include\LPC17xx.h
-      Source file:   Device\Source\ARM\startup_LPC17xx.s
-      Include file:  RTE_Driver\Config\RTE_Device.h
-
-   * Component: Keil::Device:PIN:1.0.0
-      Include file:  RTE_Driver\PIN_LPC17xx.h
-      Source file:   RTE_Driver\PIN_LPC17xx.c
-
-   * Component: Keil::CMSIS Driver:USART:2.13.0
-      Source file:   RTE_Driver\UART_LPC17xx.c
-
    * Component: Keil::Device:GPDMA:1.4.0
       Source file:   RTE_Driver\GPDMA_LPC17xx.c
       Include file:  RTE_Driver\GPDMA_LPC17xx.h
@@ -89,7 +76,20 @@ Package Vendor: Keil
    * Component: Keil::Device:GPIO:1.1.0
       Include file:  RTE_Driver\GPIO_LPC17xx.h
       Source file:   RTE_Driver\GPIO_LPC17xx.c
-Build Time Elapsed:  00:00:01
+
+   * Component: Keil::Device:PIN:1.0.0
+      Include file:  RTE_Driver\PIN_LPC17xx.h
+      Source file:   RTE_Driver\PIN_LPC17xx.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Include file:  Device\Include\LPC17xx.h
+      Source file:   Device\Source\system_LPC17xx.c
+      Source file:   Device\Source\ARM\startup_LPC17xx.s
+      Include file:  RTE_Driver\Config\RTE_Device.h
+
+   * Component: Keil::CMSIS Driver:USART:2.13.0
+      Source file:   RTE_Driver\UART_LPC17xx.c
+Build Time Elapsed:  00:00:11
 </pre>
 </body>
 </html>

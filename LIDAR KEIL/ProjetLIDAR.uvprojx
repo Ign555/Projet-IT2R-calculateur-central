@@ -484,6 +484,18 @@
       </component>
     </components>
     <files>
+      <file attr="config" category="source" name="IUT\TIMER.c" version="1.0.0">
+        <instance index="0" removed="1">RTE\Board_Support\TIMER.c</instance>
+        <component Cbundle="IUT S2/S3" Cclass="Board Support" Cgroup="Timer et PWM" Csub="Timer/PWM" Cvendor="Keil" Cversion="1.0.0"/>
+        <package name="LPC1700_DFP" schemaVersion="1.7.28" url="https://www.keil.com/pack/" vendor="Keil" version="3.0.0"/>
+        <targetInfos/>
+      </file>
+      <file attr="config" category="header" name="IUT\TIMER.h" version="1.0.0">
+        <instance index="0" removed="1">RTE\Board_Support\TIMER.h</instance>
+        <component Cbundle="IUT S2/S3" Cclass="Board Support" Cgroup="Timer et PWM" Csub="Timer/PWM" Cvendor="Keil" Cversion="1.0.0"/>
+        <package name="LPC1700_DFP" schemaVersion="1.7.28" url="https://www.keil.com/pack/" vendor="Keil" version="3.0.0"/>
+        <targetInfos/>
+      </file>
       <file attr="config" category="header" condition="LPC1700 CMSIS Device" name="RTE_Driver\Config\RTE_Device.h" version="2.4.1">
         <instance index="0">RTE\Device\LPC1768\RTE_Device.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="LPC17xx CMSIS Device ARMCC"/>
