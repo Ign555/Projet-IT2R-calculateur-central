@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\PROJETDFPlayer.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\PROJETDFPlayer.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Feb 18 16:46:06 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Mar 25 19:13:20 2025
 <BR><P>
 <H3>Maximum Stack Usage =        168 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -28,7 +28,7 @@ Mutually Recursive functions
  <LI><a href="#[c]">PendSV_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[c]">PendSV_Handler</a><BR>
  <LI><a href="#[d]">SysTick_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[d]">SysTick_Handler</a><BR>
  <LI><a href="#[24]">ADC_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[24]">ADC_IRQHandler</a><BR>
- <LI><a href="#[87]">USART_Send</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[86]">USART_Receive</a><BR>
+ <LI><a href="#[89]">USART_Send</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[88]">USART_Receive</a><BR>
 </UL>
 <P>
 <H3>
@@ -243,7 +243,7 @@ Global Symbols
 
 <P><STRONG><a name="[6a]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; Send_DFPlayer_Command
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; DFPlayer_send_command
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -432,10 +432,10 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[93]"></a>__aeabi_uldivmod</STRONG> (Thumb, 0 bytes, Stack size 48 bytes, lludivv7m.o(.text))
+<P><STRONG><a name="[95]"></a>__aeabi_uldivmod</STRONG> (Thumb, 0 bytes, Stack size 48 bytes, lludivv7m.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = __aeabi_uldivmod
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetBaudrate
+<BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetBaudrate
 </UL>
 
 <P><STRONG><a name="[bb]"></a>_ll_udiv</STRONG> (Thumb, 238 bytes, Stack size 48 bytes, lludivv7m.o(.text), UNUSED)
@@ -483,86 +483,88 @@ Global Symbols
 
 <P><STRONG><a name="[c3]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
 
+<P><STRONG><a name="[74]"></a>DFPlayer_init</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, dfplayermini.o(i.DFPlayer_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = DFPlayer_init &rArr; Init_UART1
+</UL>
+<BR>[Calls]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_UART1
+</UL>
+<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[96]"></a>DFPlayer_send_command</STRONG> (Thumb, 136 bytes, Stack size 48 bytes, dfplayermini.o(i.DFPlayer_send_command))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = DFPlayer_send_command
+</UL>
+<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
 <P><STRONG><a name="[28]"></a>DMA_IRQHandler</STRONG> (Thumb, 372 bytes, Stack size 16 bytes, gpdma_lpc17xx.o(i.DMA_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = DMA_IRQHandler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
+<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
-<P><STRONG><a name="[75]"></a>GPDMA_ChannelConfigure</STRONG> (Thumb, 232 bytes, Stack size 40 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelConfigure))
+<P><STRONG><a name="[77]"></a>GPDMA_ChannelConfigure</STRONG> (Thumb, 232 bytes, Stack size 40 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelConfigure))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = GPDMA_ChannelConfigure &rArr; Set_Channel_active_flag
 </UL>
-<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_Channel_active_flag
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
+<BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_Channel_active_flag
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
 </UL>
-<BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
 
-<P><STRONG><a name="[77]"></a>GPDMA_ChannelDisable</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelDisable))
+<P><STRONG><a name="[79]"></a>GPDMA_ChannelDisable</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelDisable))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = GPDMA_ChannelDisable
 </UL>
-<BR>[Calls]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
+<BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
 </UL>
-<BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
-</UL>
-
-<P><STRONG><a name="[8f]"></a>GPDMA_ChannelGetCount</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelGetCount))
-<BR><BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
+<BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 
-<P><STRONG><a name="[78]"></a>GPDMA_Initialize</STRONG> (Thumb, 154 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_Initialize))
+<P><STRONG><a name="[91]"></a>GPDMA_ChannelGetCount</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelGetCount))
+<BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
+</UL>
+
+<P><STRONG><a name="[7a]"></a>GPDMA_Initialize</STRONG> (Thumb, 154 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_Initialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = GPDMA_Initialize
 </UL>
-<BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
+<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
 </UL>
-<BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
+<BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
 </UL>
 
-<P><STRONG><a name="[92]"></a>GPDMA_PeripheralSelect</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_PeripheralSelect))
+<P><STRONG><a name="[94]"></a>GPDMA_PeripheralSelect</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_PeripheralSelect))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = GPDMA_PeripheralSelect
 </UL>
-<BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
 
-<P><STRONG><a name="[7a]"></a>GPDMA_Uninitialize</STRONG> (Thumb, 116 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_Uninitialize))
+<P><STRONG><a name="[7c]"></a>GPDMA_Uninitialize</STRONG> (Thumb, 116 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_Uninitialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = GPDMA_Uninitialize
 </UL>
-<BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
+<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
+<BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
 </UL>
 
-<P><STRONG><a name="[94]"></a>Init_UART1</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, baseuart.o(i.Init_UART1))
+<P><STRONG><a name="[75]"></a>Init_UART1</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, dfplayermini.o(i.Init_UART1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Init_UART1
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DFPlayer_init
 </UL>
 
-<P><STRONG><a name="[95]"></a>Init_UART2</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, baseuart.o(i.Init_UART2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Init_UART2
-</UL>
-<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[8e]"></a>PIN_Configure</STRONG> (Thumb, 246 bytes, Stack size 24 bytes, pin_lpc17xx.o(i.PIN_Configure))
+<P><STRONG><a name="[90]"></a>PIN_Configure</STRONG> (Thumb, 246 bytes, Stack size 24 bytes, pin_lpc17xx.o(i.PIN_Configure))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PIN_Configure
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
-<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PIN_Configure
-<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
-</UL>
-
-<P><STRONG><a name="[96]"></a>Send_DFPlayer_Command</STRONG> (Thumb, 136 bytes, Stack size 48 bytes, baseuart.o(i.Send_DFPlayer_Command))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Send_DFPlayer_Command
-</UL>
-<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PIN_Configure
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 
 <P><STRONG><a name="[31]"></a>SystemInit</STRONG> (Thumb, 302 bytes, Stack size 0 bytes, system_lpc17xx.o(i.SystemInit))
@@ -575,82 +577,81 @@ Global Symbols
 <P><STRONG><a name="[13]"></a>UART0_IRQHandler</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.UART0_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = UART0_IRQHandler &rArr; USART_IRQHandler &rArr; USART_RxLineIntHandler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
+<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
 <P><STRONG><a name="[14]"></a>UART1_IRQHandler</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.UART1_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = UART1_IRQHandler &rArr; USART_IRQHandler &rArr; USART_RxLineIntHandler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
+<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
 <P><STRONG><a name="[15]"></a>UART2_IRQHandler</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.UART2_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = UART2_IRQHandler &rArr; USART_IRQHandler &rArr; USART_RxLineIntHandler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
+<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
 <P><STRONG><a name="[34]"></a>USART0_GPDMA_Rx_Event</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_GPDMA_Rx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = USART0_GPDMA_Rx_Event &rArr; USART_GPDMA_Rx_Event
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Rx_Event
+<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Rx_Event
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[33]"></a>USART0_GPDMA_Tx_Event</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_GPDMA_Tx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART0_GPDMA_Tx_Event &rArr; USART_GPDMA_Tx_Event
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Tx_Event
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Tx_Event
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[36]"></a>USART1_GPDMA_Rx_Event</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_GPDMA_Rx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = USART1_GPDMA_Rx_Event &rArr; USART_GPDMA_Rx_Event
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Rx_Event
+<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Rx_Event
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[35]"></a>USART1_GPDMA_Tx_Event</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_GPDMA_Tx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART1_GPDMA_Tx_Event &rArr; USART_GPDMA_Tx_Event
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Tx_Event
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Tx_Event
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[38]"></a>USART2_GPDMA_Rx_Event</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_GPDMA_Rx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = USART2_GPDMA_Rx_Event &rArr; USART_GPDMA_Rx_Event
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Rx_Event
+<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Rx_Event
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[37]"></a>USART2_GPDMA_Tx_Event</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_GPDMA_Tx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART2_GPDMA_Tx_Event &rArr; USART_GPDMA_Tx_Event
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Tx_Event
+<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GPDMA_Tx_Event
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
-<P><STRONG><a name="[8d]"></a>USART_SetBaudrate</STRONG> (Thumb, 314 bytes, Stack size 64 bytes, uart_lpc17xx.o(i.USART_SetBaudrate))
+<P><STRONG><a name="[8f]"></a>USART_SetBaudrate</STRONG> (Thumb, 314 bytes, Stack size 64 bytes, uart_lpc17xx.o(i.USART_SetBaudrate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = USART_SetBaudrate &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
-<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetUsartClockFreq
+<BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetUsartClockFreq
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 
-<P><STRONG><a name="[6b]"></a>main</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, baseuart.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = main &rArr; Send_DFPlayer_Command
+<P><STRONG><a name="[6b]"></a>main</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, baseuart.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = main &rArr; DFPlayer_send_command
 </UL>
-<BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temporisation_ms
-<LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_DFPlayer_Command
-<LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_UART2
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Init_UART1
+<BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DFPlayer_send_command
+<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DFPlayer_init
+<LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temporisation_ms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
@@ -658,301 +659,301 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[8c]"></a>GetUsartClockFreq</STRONG> (Thumb, 64 bytes, Stack size 12 bytes, uart_lpc17xx.o(i.GetUsartClockFreq))
+<P><STRONG><a name="[8e]"></a>GetUsartClockFreq</STRONG> (Thumb, 64 bytes, Stack size 12 bytes, uart_lpc17xx.o(i.GetUsartClockFreq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = GetUsartClockFreq
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetBaudrate
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetBaudrate
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 
 <P><STRONG><a name="[43]"></a>USART0_Control</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART0_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = USART0_Control &rArr; USART_Control &rArr; USART_SetBaudrate &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[3a]"></a>USART0_GetCapabilities</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_GetCapabilities))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART0_GetCapabilities
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetCapabilities
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetCapabilities
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[46]"></a>USART0_GetModemStatus</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_GetModemStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART0_GetModemStatus &rArr; USART_GetModemStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetModemStatus
+<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetModemStatus
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[42]"></a>USART0_GetRxCount</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_GetRxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART0_GetRxCount &rArr; USART_GetRxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[44]"></a>USART0_GetStatus</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_GetStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART0_GetStatus &rArr; USART_GetStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetStatus
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetStatus
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[41]"></a>USART0_GetTxCount</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_GetTxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART0_GetTxCount &rArr; USART_GetTxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[3b]"></a>USART0_Initialize</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_Initialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART0_Initialize &rArr; USART_Initialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
+<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[3d]"></a>USART0_PowerControl</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_PowerControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART0_PowerControl &rArr; USART_PowerControl &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
+<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[3f]"></a>USART0_Receive</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART0_Receive))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = USART0_Receive &rArr; USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[3e]"></a>USART0_Send</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART0_Send))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = USART0_Send &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[45]"></a>USART0_SetModemControl</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_SetModemControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART0_SetModemControl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetModemControl
+<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetModemControl
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[40]"></a>USART0_Transfer</STRONG> (Thumb, 22 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART0_Transfer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = USART0_Transfer &rArr; USART_Transfer &rArr; USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
+<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[3c]"></a>USART0_Uninitialize</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART0_Uninitialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART0_Uninitialize &rArr; USART_Uninitialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
+<BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[50]"></a>USART1_Control</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART1_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = USART1_Control &rArr; USART_Control &rArr; USART_SetBaudrate &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[47]"></a>USART1_GetCapabilities</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_GetCapabilities))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART1_GetCapabilities
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetCapabilities
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetCapabilities
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[53]"></a>USART1_GetModemStatus</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_GetModemStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART1_GetModemStatus &rArr; USART_GetModemStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetModemStatus
+<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetModemStatus
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[4f]"></a>USART1_GetRxCount</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_GetRxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART1_GetRxCount &rArr; USART_GetRxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[51]"></a>USART1_GetStatus</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_GetStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART1_GetStatus &rArr; USART_GetStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetStatus
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetStatus
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[4e]"></a>USART1_GetTxCount</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_GetTxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART1_GetTxCount &rArr; USART_GetTxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[48]"></a>USART1_Initialize</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_Initialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART1_Initialize &rArr; USART_Initialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
+<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[4a]"></a>USART1_PowerControl</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_PowerControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART1_PowerControl &rArr; USART_PowerControl &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
+<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[4c]"></a>USART1_Receive</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART1_Receive))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = USART1_Receive &rArr; USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[4b]"></a>USART1_Send</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART1_Send))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = USART1_Send &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[52]"></a>USART1_SetModemControl</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_SetModemControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART1_SetModemControl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetModemControl
+<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetModemControl
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[4d]"></a>USART1_Transfer</STRONG> (Thumb, 22 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART1_Transfer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = USART1_Transfer &rArr; USART_Transfer &rArr; USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
+<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[49]"></a>USART1_Uninitialize</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART1_Uninitialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART1_Uninitialize &rArr; USART_Uninitialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
+<BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[5d]"></a>USART2_Control</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART2_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = USART2_Control &rArr; USART_Control &rArr; USART_SetBaudrate &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[54]"></a>USART2_GetCapabilities</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_GetCapabilities))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART2_GetCapabilities
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetCapabilities
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetCapabilities
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[60]"></a>USART2_GetModemStatus</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_GetModemStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART2_GetModemStatus &rArr; USART_GetModemStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetModemStatus
+<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetModemStatus
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[5c]"></a>USART2_GetRxCount</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_GetRxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART2_GetRxCount &rArr; USART_GetRxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetRxCount
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[5e]"></a>USART2_GetStatus</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_GetStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = USART2_GetStatus &rArr; USART_GetStatus
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetStatus
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetStatus
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[5b]"></a>USART2_GetTxCount</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_GetTxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART2_GetTxCount &rArr; USART_GetTxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetTxCount
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[55]"></a>USART2_Initialize</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_Initialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART2_Initialize &rArr; USART_Initialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
+<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[57]"></a>USART2_PowerControl</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_PowerControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART2_PowerControl &rArr; USART_PowerControl &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
+<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[59]"></a>USART2_Receive</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART2_Receive))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = USART2_Receive &rArr; USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[58]"></a>USART2_Send</STRONG> (Thumb, 18 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART2_Send))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = USART2_Send &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[5f]"></a>USART2_SetModemControl</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_SetModemControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART2_SetModemControl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetModemControl
+<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetModemControl
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[5a]"></a>USART2_Transfer</STRONG> (Thumb, 22 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART2_Transfer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = USART2_Transfer &rArr; USART_Transfer &rArr; USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
+<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
 <P><STRONG><a name="[56]"></a>USART2_Uninitialize</STRONG> (Thumb, 10 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART2_Uninitialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART2_Uninitialize &rArr; USART_Uninitialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
+<BR>[Calls]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
-<P><STRONG><a name="[7c]"></a>USART_Control</STRONG> (Thumb, 1394 bytes, Stack size 40 bytes, uart_lpc17xx.o(i.USART_Control))
+<P><STRONG><a name="[7e]"></a>USART_Control</STRONG> (Thumb, 1394 bytes, Stack size 40 bytes, uart_lpc17xx.o(i.USART_Control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = USART_Control &rArr; USART_SetBaudrate &rArr; __aeabi_uldivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
-<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetBaudrate
-<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PIN_Configure
-<LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetUsartClockFreq
+<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
+<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SetBaudrate
+<LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PIN_Configure
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetUsartClockFreq
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_Control
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Control
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_Control
 </UL>
 
-<P><STRONG><a name="[7d]"></a>USART_GPDMA_Rx_Event</STRONG> (Thumb, 134 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_GPDMA_Rx_Event))
+<P><STRONG><a name="[7f]"></a>USART_GPDMA_Rx_Event</STRONG> (Thumb, 134 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_GPDMA_Rx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = USART_GPDMA_Rx_Event
 </UL>
 <BR>[Called By]<UL><LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_GPDMA_Rx_Event
@@ -960,7 +961,7 @@ Local Symbols
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_GPDMA_Rx_Event
 </UL>
 
-<P><STRONG><a name="[7e]"></a>USART_GPDMA_Tx_Event</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_GPDMA_Tx_Event))
+<P><STRONG><a name="[80]"></a>USART_GPDMA_Tx_Event</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_GPDMA_Tx_Event))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = USART_GPDMA_Tx_Event
 </UL>
 <BR>[Called By]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_GPDMA_Tx_Event
@@ -968,13 +969,13 @@ Local Symbols
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_GPDMA_Tx_Event
 </UL>
 
-<P><STRONG><a name="[7f]"></a>USART_GetCapabilities</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, uart_lpc17xx.o(i.USART_GetCapabilities))
+<P><STRONG><a name="[81]"></a>USART_GetCapabilities</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, uart_lpc17xx.o(i.USART_GetCapabilities))
 <BR><BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_GetCapabilities
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_GetCapabilities
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_GetCapabilities
 </UL>
 
-<P><STRONG><a name="[80]"></a>USART_GetModemStatus</STRONG> (Thumb, 236 bytes, Stack size 12 bytes, uart_lpc17xx.o(i.USART_GetModemStatus))
+<P><STRONG><a name="[82]"></a>USART_GetModemStatus</STRONG> (Thumb, 236 bytes, Stack size 12 bytes, uart_lpc17xx.o(i.USART_GetModemStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = USART_GetModemStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_GetModemStatus
@@ -982,17 +983,17 @@ Local Symbols
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_GetModemStatus
 </UL>
 
-<P><STRONG><a name="[81]"></a>USART_GetRxCount</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_GetRxCount))
+<P><STRONG><a name="[83]"></a>USART_GetRxCount</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_GetRxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = USART_GetRxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelGetCount
+<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelGetCount
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_GetRxCount
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_GetRxCount
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_GetRxCount
 </UL>
 
-<P><STRONG><a name="[82]"></a>USART_GetStatus</STRONG> (Thumb, 188 bytes, Stack size 12 bytes, uart_lpc17xx.o(i.USART_GetStatus))
+<P><STRONG><a name="[84]"></a>USART_GetStatus</STRONG> (Thumb, 188 bytes, Stack size 12 bytes, uart_lpc17xx.o(i.USART_GetStatus))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = USART_GetStatus
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_GetStatus
@@ -1000,114 +1001,114 @@ Local Symbols
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_GetStatus
 </UL>
 
-<P><STRONG><a name="[83]"></a>USART_GetTxCount</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_GetTxCount))
+<P><STRONG><a name="[85]"></a>USART_GetTxCount</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_GetTxCount))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = USART_GetTxCount
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelGetCount
+<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelGetCount
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_GetTxCount
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_GetTxCount
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_GetTxCount
 </UL>
 
-<P><STRONG><a name="[7b]"></a>USART_IRQHandler</STRONG> (Thumb, 624 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_IRQHandler))
+<P><STRONG><a name="[7d]"></a>USART_IRQHandler</STRONG> (Thumb, 624 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = USART_IRQHandler &rArr; USART_RxLineIntHandler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_RxLineIntHandler
+<BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_RxLineIntHandler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[15]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART2_IRQHandler
 <LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART1_IRQHandler
 <LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[84]"></a>USART_Initialize</STRONG> (Thumb, 254 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_Initialize))
+<P><STRONG><a name="[86]"></a>USART_Initialize</STRONG> (Thumb, 254 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_Initialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = USART_Initialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Initialize
+<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Initialize
 </UL>
 <BR>[Called By]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_Initialize
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Initialize
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_Initialize
 </UL>
 
-<P><STRONG><a name="[8b]"></a>USART_PIN_Configure</STRONG> (Thumb, 246 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_PIN_Configure))
+<P><STRONG><a name="[8d]"></a>USART_PIN_Configure</STRONG> (Thumb, 246 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_PIN_Configure))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = USART_PIN_Configure &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
+<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
 </UL>
 
-<P><STRONG><a name="[85]"></a>USART_PowerControl</STRONG> (Thumb, 610 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_PowerControl))
+<P><STRONG><a name="[87]"></a>USART_PowerControl</STRONG> (Thumb, 610 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_PowerControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART_PowerControl &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
+<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
+<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
 </UL>
 <BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_PowerControl
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_PowerControl
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_PowerControl
 </UL>
 
-<P><STRONG><a name="[86]"></a>USART_Receive</STRONG> (Thumb, 272 bytes, Stack size 40 bytes, uart_lpc17xx.o(i.USART_Receive))
+<P><STRONG><a name="[88]"></a>USART_Receive</STRONG> (Thumb, 272 bytes, Stack size 40 bytes, uart_lpc17xx.o(i.USART_Receive))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_PeripheralSelect
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_PeripheralSelect
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
 </UL>
-<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_Receive
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Receive
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_Receive
 </UL>
 
-<P><STRONG><a name="[90]"></a>USART_RxLineIntHandler</STRONG> (Thumb, 104 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART_RxLineIntHandler))
+<P><STRONG><a name="[92]"></a>USART_RxLineIntHandler</STRONG> (Thumb, 104 bytes, Stack size 8 bytes, uart_lpc17xx.o(i.USART_RxLineIntHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART_RxLineIntHandler
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
+<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_IRQHandler
 </UL>
 
-<P><STRONG><a name="[87]"></a>USART_Send</STRONG> (Thumb, 412 bytes, Stack size 40 bytes, uart_lpc17xx.o(i.USART_Send))
+<P><STRONG><a name="[89]"></a>USART_Send</STRONG> (Thumb, 412 bytes, Stack size 40 bytes, uart_lpc17xx.o(i.USART_Send))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88 + In Cycle
 <LI>Call Chain = USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_PeripheralSelect
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_PeripheralSelect
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
-<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Transfer
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_Send
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Send
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_Send
 </UL>
 
-<P><STRONG><a name="[88]"></a>USART_SetModemControl</STRONG> (Thumb, 160 bytes, Stack size 0 bytes, uart_lpc17xx.o(i.USART_SetModemControl))
+<P><STRONG><a name="[8a]"></a>USART_SetModemControl</STRONG> (Thumb, 160 bytes, Stack size 0 bytes, uart_lpc17xx.o(i.USART_SetModemControl))
 <BR><BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_SetModemControl
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_SetModemControl
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_SetModemControl
 </UL>
 
-<P><STRONG><a name="[89]"></a>USART_Transfer</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_Transfer))
+<P><STRONG><a name="[8b]"></a>USART_Transfer</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, uart_lpc17xx.o(i.USART_Transfer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = USART_Transfer &rArr; USART_Receive &rArr; USART_Send &rArr;  USART_Receive (Cycle)
 </UL>
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_Transfer
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Transfer
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART0_Transfer
 </UL>
 
-<P><STRONG><a name="[8a]"></a>USART_Uninitialize</STRONG> (Thumb, 226 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_Uninitialize))
+<P><STRONG><a name="[8c]"></a>USART_Uninitialize</STRONG> (Thumb, 226 bytes, Stack size 16 bytes, uart_lpc17xx.o(i.USART_Uninitialize))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = USART_Uninitialize &rArr; PIN_Configure
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Uninitialize
+<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIN_Configure
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Uninitialize
 </UL>
 <BR>[Called By]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART2_Uninitialize
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Uninitialize
@@ -1119,25 +1120,25 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> uart_lpc17xx.o(.constdata)
 </UL>
-<P><STRONG><a name="[91]"></a>__NVIC_ClearPendingIRQ</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, uart_lpc17xx.o(i.__NVIC_ClearPendingIRQ))
-<BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
+<P><STRONG><a name="[93]"></a>__NVIC_ClearPendingIRQ</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, uart_lpc17xx.o(i.__NVIC_ClearPendingIRQ))
+<BR><BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
 </UL>
 
-<P><STRONG><a name="[74]"></a>Clear_Channel_active_flag</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, gpdma_lpc17xx.o(i.Clear_Channel_active_flag))
+<P><STRONG><a name="[76]"></a>Clear_Channel_active_flag</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, gpdma_lpc17xx.o(i.Clear_Channel_active_flag))
 <BR><BR>[Called By]<UL><LI><a href="#[28]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA_IRQHandler
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
 </UL>
 
-<P><STRONG><a name="[76]"></a>Set_Channel_active_flag</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.Set_Channel_active_flag))
+<P><STRONG><a name="[78]"></a>Set_Channel_active_flag</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.Set_Channel_active_flag))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Set_Channel_active_flag
 </UL>
-<BR>[Called By]<UL><LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelConfigure
 </UL>
 
-<P><STRONG><a name="[79]"></a>__NVIC_ClearPendingIRQ</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, gpdma_lpc17xx.o(i.__NVIC_ClearPendingIRQ))
-<BR><BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Uninitialize
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Initialize
+<P><STRONG><a name="[7b]"></a>__NVIC_ClearPendingIRQ</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, gpdma_lpc17xx.o(i.__NVIC_ClearPendingIRQ))
+<BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Uninitialize
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_Initialize
 </UL>
 <P>
 <H3>
