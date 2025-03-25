@@ -1,0 +1,25 @@
+import sensor, image, lcd
+import KPU as kpu
+
+lcd.init()
+sensor.reset()
+sensor.set_pixformat(sensor.RGB565) # format
+sensor.set_framesize(sensor.QVGA) # resolution
+sensor.run(1)
+sensor.set_windowing((224,224))  # Ajout HD pour redimensionner les images du capteur
+
+modele = kpu.load(0x300000) #Charge le modele depuis 0x300000
+anchors = [2.0, 2.0, 3.0, 3.0, 4.0, 4.0, 5.0, 5.0, 6.0, 6.0] # Definit les ancres 
+kpu.init_yolo2(modele, 0.48, 0.3, 5, anchors)  #init du modele avec des parametres pour la detection
+
+while True:
+        img = sensor.snapshot() #capture l'image
+        Resultats = kpu.run_yolo2(modele, img)#utilise le modele sur l'image
+        if Resultats : # si objet detecte
+            for i in Resultats :
+                print(i)
+                img.draw_rectangle(i.rect(),color=(0,255,0)) #dessin un rectangle autour de l'objet
+                img.draw_string(i.x(), i.y(), str(int((i.value())*100)) + " % panneau detecte", lcd.GREEN, scale=2)#ajoute la précision
+        lcd.display(img) # affiche sur le lcd
+
+
