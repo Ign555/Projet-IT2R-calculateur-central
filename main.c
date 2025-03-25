@@ -8,7 +8,7 @@
 #include "Driver_USART.h"               		// ::CMSIS Driver:USART
 #include <stdlib.h>
 #include "Lib_UART.h"
-#include "Lib_Mot.h"
+#include "pwm_moteur.h"
 
 
  /*----------------------------------------------------------------------------
@@ -59,8 +59,25 @@ osMailQDef(Manette, 1, uint8_t);
  *---------------------------------------------------------------------------*/
 int main (void) {
 	
-	Init_UART();
+	//Motor init
+	init_servo_moteur();
+	init_moteur();
+	moteur_set_duty(0);
+	moteur_set_direction(0);
+	servo_moteur_set_duty(0.075);
 	
+	//Motor init process
+	osDelay(5000);
+	servo_moteur_set_duty(0.1);
+	osDelay(5000);
+	servo_moteur_set_duty(0.05);
+	osDelay(5000);
+	servo_moteur_set_duty(0.075);
+	
+	
+	//Init UART
+	Init_UART();
+	/*
   osKernelInitialize ();
 	
 	ID_DFPlayer = osThreadCreate ( osThread ( TaskDFPlayer ), NULL);
@@ -70,7 +87,7 @@ int main (void) {
 	ID_Mutex_UART = osMutexCreate( osMutex( Mutex_UART));
 
   osKernelStart ();
-	
+	*/
 	osDelay(osWaitForever);
 	
 	return 0;
@@ -202,14 +219,13 @@ void TaskRFID ( void const * argument ){
  * Task MOTEUR
  *---------------------------------------------------------------------------*/
 
-void TaskMoteur ( void const * argument ) {
-	
+void TaskMoteur ( void const * argumsent ) {
+	/*
 	Servo_Mot_Initialize();
 	Mot_Initialize();
 	
-	Mot_Set_Duty(0.9);
-	LPC_PWM1->TCR = 1;  /*validation de timer  et reset counter */	
-	Servo_Mot_Set_Duty(0.1);
+	Mot_Set_Duty(0.9); */
+	//Servo_Mot_Set_Duty(0.1);
 	
 	while (1);
 	

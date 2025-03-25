@@ -1,7 +1,7 @@
 --cpu Cortex-M3
 ".\objects\main.o"
+".\objects\pwm_moteur.o"
 ".\objects\lib_uart.o"
-".\objects\lib_mot.o"
 "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib"
 ".\objects\rtx_conf_cm.o"
 ".\objects\uart_lpc17xx.o"

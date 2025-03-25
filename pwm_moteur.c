@@ -49,7 +49,6 @@ void moteur_set_direction(char dir)
 
 
 
-
 void servo_moteur_set_duty(float duty){
 	servo_duty = duty;
 }
