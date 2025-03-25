@@ -4,7 +4,7 @@
 
  /*----------------------------------------------------------------------------
   * Driver UART Extern
-  *---------------------------------------------------------------------------*/
+  *--------------------------------------------------------------------------- */
 
 extern ARM_DRIVER_USART Driver_USART0;
 extern ARM_DRIVER_USART Driver_USART1;
@@ -12,7 +12,7 @@ extern ARM_DRIVER_USART Driver_USART2;
 
 /*----------------------------------------------------------------------------
  * Fonction D'Init des ports 0 - 1 - 2 de l' UART
- *---------------------------------------------------------------------------*/
+ *--------------------------------------------------------------------------- */
 
 void Init_UART ( void ) {
 	
@@ -60,7 +60,7 @@ void Init_UART ( void ) {
 
 /*----------------------------------------------------------------------------
  * Fonction liant de micro au DFPlayer
- *---------------------------------------------------------------------------*/
+ *--------------------------------------------------------------------------- */
 
 void LinkDFPlayer ( void ){
 	
@@ -72,7 +72,7 @@ void LinkDFPlayer ( void ){
 
 /*----------------------------------------------------------------------------
  * Fonction d'Envoie de Commande au DFPlayer
- *---------------------------------------------------------------------------*/
+ *--------------------------------------------------------------------------- */
 
 void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, unsigned const char param2 ){
 	
@@ -81,7 +81,7 @@ void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, 
 	unsigned char chkb2; 																																		//checksum low
 	int checksum; 																																					//checksum pour calculer
 	
-  unsigned char packet[10]; 																															//trame à envoyer
+  unsigned char packet[10]; 																															//trame Ã  envoyer
 	packet[0] = 0x7E; 																																			//start 
 	packet[1] = 0xFF; 																																			//version
 	packet[2] = 0x06; 																																			//taille de la data (toujours 06)
@@ -106,7 +106,7 @@ void Send_DFPlayer_Command ( unsigned char command, unsigned const char param1, 
 
 /*----------------------------------------------------------------------------
  * Fonction de Delais
- *---------------------------------------------------------------------------*/
+ *--------------------------------------------------------------------------- */
 
 void tempo ( int ms ) {
 	
@@ -118,12 +118,12 @@ void tempo ( int ms ) {
 
 /*----------------------------------------------------------------------------
  * Fonction de Lecture du RFID avec Retour de Tableau
- *---------------------------------------------------------------------------*/
+ *--------------------------------------------------------------------------- */
 
 char *Read_RFID ( void ) {
 	char *buff = (char *)malloc(14);
 	
-	Driver_USART1.Receive(buff,14); // la fonction remplira jusqu'à 16 cases
+	Driver_USART1.Receive(buff,14); // la fonction remplira jusqu'Ã  16 cases
 	while ( 14 < Driver_USART1.GetRxCount() ) ;
 	
 	return buff;
