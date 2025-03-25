@@ -15,6 +15,7 @@ void Send_Lidar_Command(unsigned char command, unsigned char payloadsize, unsign
 
 void Temporisation_ms(int a); 													//fonction de temporisation en ms
 
+
 int main (void){
 	
 	//Variables
@@ -22,13 +23,10 @@ int main (void){
 	
 	//Initialisations
 	Init_UART0();
-	initTimer0(1999,0);
+	initTimer0(0,999);
 	
-		//Init P2.5 en sortie
-	LPC_GPIO2 -> FIODIR0 |= (1<<5); 
-
 	//commande lidar
-	Send_Lidar_Command(0x82,0x05,tab);
+	LPC_PWM1->MR6 = 500; 																	// 0 = 0% , 999 = 100%
 	
 	while(1){
  
@@ -39,31 +37,24 @@ int main (void){
 
 void initTimer0(int prescaler, int MR)
 {
-		// Validation des 4 TIMERS   
-		LPC_SC->PCONP = LPC_SC->PCONP | 0x00C00006;   
+	LPC_SC->PCONP = LPC_SC->PCONP | 0x00000040;   // enable PWM1
+	LPC_PWM1->PR = 0;  // prescaler
+	LPC_PWM1->MR0 = 999;    // MR0+1=100   la période de la PWM vaut 50ms 20000hz 1249
 	
-		// Configuration de la période de comptage
-		LPC_TIM0->PR = prescaler;  // le registre PR prend la valeur du prescaler
-		LPC_TIM0->MR0 = MR;    // le registre MR0 prend la valeur maximum du compteur
-		//le compteur, nommé TC ici, est remis à 0 chaque fois qu'il 
-	  //atteint la valeur de //MR0, MR0 est le registre qui contient la valeur de N 
-		// voir la table 429
-		LPC_TIM0->MCR |= 0x00000003;
+	LPC_PWM1->MCR = LPC_PWM1->MCR | 0x00000002; // Compteur relancé quand MR0 repasse à 0
+	LPC_PWM1->LER = LPC_PWM1->LER | 0x0000007F;  // ceci donne le droit de modifier dynamiquement la valeur du rapport cyclique
+																						 // bit 0 = MR0    bit 1 MR1 bit2 MR2 bit3 = MR3
+	LPC_PWM1->PCR = LPC_PWM1->PCR | 0x0000ff00;  // autorise les sortie PWM1/2/3 bits 9, 10, 11
+	LPC_PINCON->PINSEL4 = LPC_PINCON->PINSEL4| 0x00000400;
+	LPC_PWM1->PCR = LPC_PWM1->PCR | 0x00000e00;  // autorise les sortie PWM1/2/3 bits 9, 10, 11
+	LPC_PINCON->PINSEL7 = LPC_PINCON->PINSEL7| 0x000C0000;
 	
-		// validation de timer 0 et reset compteur ceci est toujours fait en dernier		
-		LPC_TIM0->TCR = 1; //permet au timer de créer une interruption
-	
-		NVIC_SetPriority(TIMER0_IRQn,10);	
-		NVIC_EnableIRQ(TIMER0_IRQn);
-}
-
-void TIMER0_IRQHandler(void){
-
-	LPC_TIM0 -> IR = (1<<0);
-	
-	LPC_GPIO2 -> FIOPIN0 ^= (1<<5); 
+	LPC_PWM1->TCR = 1;  /*validation de timer  et reset counter */	
 	
 }
+
+
+
 
 void Init_UART0(void){
 	Driver_USART0.Initialize(NULL);
