@@ -421,6 +421,16 @@
               <FileType>1</FileType>
               <FilePath>.\baseUART.c</FilePath>
             </File>
+            <File>
+              <FileName>dfplayermini.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\dfplayermini.c</FilePath>
+            </File>
+            <File>
+              <FileName>dfplayermini.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\dfplayermini.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
