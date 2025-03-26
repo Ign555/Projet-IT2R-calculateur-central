@@ -17,3 +17,4 @@
 .\objects\main.o: Lib_UART.h
 .\objects\main.o: pwm_moteur.h
 .\objects\main.o: C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver\GPIO_LPC17xx.h
+.\objects\main.o: dfplayermini.h

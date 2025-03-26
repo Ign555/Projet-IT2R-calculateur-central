@@ -1,4 +1,5 @@
 #include "Driver_USART.h" // ::CMSIS Driver:USART
+#include "osObjects.h"  
 
 #ifndef DFPLAYER_H
 #define DFPLAYER_H

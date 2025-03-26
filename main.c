@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "Lib_UART.h"
 #include "pwm_moteur.h"
-
+#include "dfplayermini.h"
 
  /*----------------------------------------------------------------------------
   * Driver UART Extern
@@ -59,6 +59,10 @@ osMailQDef(Manette, 1, uint8_t);
  *---------------------------------------------------------------------------*/
 int main (void) {
 	
+	//DF Player init
+	
+	DFPlayer_init();
+	
 	//Motor init
 	init_servo_moteur();
 	init_moteur();
@@ -70,10 +74,14 @@ int main (void) {
 	osDelay(5000);
 	servo_moteur_set_duty(0.1);
 	osDelay(5000);
+	servo_moteur_set_duty(0.075);
+	osDelay(5000);
 	servo_moteur_set_duty(0.05);
 	osDelay(5000);
 	servo_moteur_set_duty(0.075);
 	
+	DFPlayer_set_volume(30);
+	DFPlayer_play_in_folder(0x02, 0x02);
 	
 	//Init UART
 	Init_UART();
