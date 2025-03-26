@@ -11,15 +11,10 @@ int main (void){
 
 	DFPlayer_init();
 	
-	DFPlayer_send_command(0x3F,0x00,0x00); //Initialise le DFPlayer
+	
 	Temporisation_ms(1000);
-	DFPlayer_send_command(0x03,0x01,0x01); //Joue un son mais ça marche pas, à revoir
-	Temporisation_ms(5000);
-	DFPlayer_send_command(0x01,0x00,0x00); //Next
-	Temporisation_ms(5000);
-	DFPlayer_send_command(0x01,0x00,0x00); //Next
-	
-	
+	DFPlayer_send_command(0x0F,0x01,0x01); //Joue un son mais ça marche pas, à revoir
+	//DFPlayer_next();
 
 	while (1){
 

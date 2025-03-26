@@ -12,10 +12,6 @@ void Init_UART1(void){
 	Driver_USART1.Control(ARM_USART_CONTROL_TX,1);
 	Driver_USART1.Control(ARM_USART_CONTROL_RX,1);
 }
-
-void DFPlayer_init(){
-	Init_UART1();
-}
 void DFPlayer_send_command(unsigned char command, unsigned const char param1, unsigned const char param2) {
 	
 		unsigned char chkb1; //checksum high
@@ -42,4 +38,22 @@ void DFPlayer_send_command(unsigned char command, unsigned const char param1, un
 		packet[9] = 0xEF; //bit de stop
     while(Driver_USART1.GetStatus().tx_busy == 1); // attente buffer TX vide
 		Driver_USART1.Send(packet,10); //envoie du packet
-}	
+}
+
+void DFPlayer_init(){
+	Init_UART1();
+	DFPlayer_send_command(DFPLAYER_INIT, 0x00, 0x00); //Initialise le DFPlayer
+}
+void DFPlayer_set_volume(uint8_t volume){
+	if(volume > 30) volume = 30;
+	DFPlayer_send_command(DFPLAYER_SET_VOLUME, 0x00, volume); //Initialise le DFPlayer
+}
+void DFPlayer_next(void){
+	DFPlayer_send_command(DFPLAYER_NEXT,0x00,0x00); //Next	
+}
+void DFPlayer_play(uint8_t track){
+	DFPlayer_send_command(DFPLAYER_PLAY_SPECIFIC_SOUND,0x00,0x00); //Next	
+}
+void DFPlayer_play_in_folder(uint8_t folder, uint8_t track){
+	DFPlayer_send_command(DFPLAYER_PLAY_SPECIFIC_SOUND_IN_FOLDER,folder,track); //Next	
+}

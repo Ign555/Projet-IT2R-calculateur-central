@@ -22,28 +22,34 @@ Dialog DLL:      TARMP1.DLL V1.24.0.0
  
 <h2>Project:</h2>
 C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\PROJETDFPlayer.uvprojx
-Project File Date:  03/25/2025
+Project File Date:  03/26/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling baseUART.c...
-dfplayermini.h(6): warning:  #1295-D: Deprecated declaration DFPlayer_init - give arg types
+compiling dfplayermini.c...
+dfplayermini.h(19): warning:  #1295-D: Deprecated declaration DFPlayer_init - give arg types
   void DFPlayer_init();
-dfplayermini.h(7): warning:  #1295-D: Deprecated declaration DFPlayer_play - give arg types
-  void DFPlayer_play();
-dfplayermini.h(8): warning:  #1295-D: Deprecated declaration DFPlayer_next - give arg types
+dfplayermini.h(20): warning:  #1295-D: Deprecated declaration DFPlayer_next - give arg types
   void DFPlayer_next();
-dfplayermini.h(11): warning:  #1-D: last line of file ends without a newline
+dfplayermini.h(28): warning:  #1-D: last line of file ends without a newline
   #endif
-baseUART.c(14): warning:  #223-D: function "DFPlayer_send_command" declared implicitly
-  	DFPlayer_send_command(0x3F,0x00,0x00); //Initialise le DFPlayer
-baseUART.c(27): warning:  #111-D: statement is unreachable
+dfplayermini.c(59): warning:  #1-D: last line of file ends without a newline
+  }
+dfplayermini.c: 4 warnings, 0 errors
+compiling baseUART.c...
+dfplayermini.h(19): warning:  #1295-D: Deprecated declaration DFPlayer_init - give arg types
+  void DFPlayer_init();
+dfplayermini.h(20): warning:  #1295-D: Deprecated declaration DFPlayer_next - give arg types
+  void DFPlayer_next();
+dfplayermini.h(28): warning:  #1-D: last line of file ends without a newline
+  #endif
+baseUART.c(22): warning:  #111-D: statement is unreachable
   	return 0;
-baseUART.c: 6 warnings, 0 errors
+baseUART.c: 4 warnings, 0 errors
 linking...
-Program Size: Code=9160 RO-data=1056 RW-data=12 ZI-data=924  
-".\Objects\PROJETDFPlayer.axf" - 0 Error(s), 6 Warning(s).
+Program Size: Code=8504 RO-data=704 RW-data=12 ZI-data=820  
+".\Objects\PROJETDFPlayer.axf" - 0 Error(s), 8 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -56,12 +62,12 @@ Package Vendor: ARM
 
 Package Vendor: Keil
                 https://www.keil.com/pack/Keil.LPC1700_DFP.3.0.0.pack
-                Keil::Device:PIN:1.0.0
+                Keil::Device:Startup:1.0.0
                 NXP LPC1700 Series Device Support, Drivers and Examples for MCB1700 and LPC1788-32
-   * Component: PIN Version: 1.0.0
    * Component: Startup Version: 1.0.0
-   * Component: USART Version: 2.13.0
    * Component: GPDMA Version: 1.4.0
+   * Component: USART Version: 2.13.0
+   * Component: PIN Version: 1.0.0
 
 <h2>Collection of Component include folders:</h2>
   C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE
@@ -78,23 +84,23 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE:5.3.0
 
-   * Component: Keil::Device:PIN:1.0.0
-      Include file:  RTE_Driver\PIN_LPC17xx.h
-      Source file:   RTE_Driver\PIN_LPC17xx.c
-
    * Component: Keil::Device:Startup:1.0.0
       Include file:  Device\Include\LPC17xx.h
-      Source file:   Device\Source\system_LPC17xx.c
       Include file:  RTE_Driver\Config\RTE_Device.h
+      Source file:   Device\Source\system_LPC17xx.c
       Source file:   Device\Source\ARM\startup_LPC17xx.s
+
+   * Component: Keil::Device:GPDMA:1.4.0
+      Source file:   RTE_Driver\GPDMA_LPC17xx.c
+      Include file:  RTE_Driver\GPDMA_LPC17xx.h
 
    * Component: Keil::CMSIS Driver:USART:2.13.0
       Source file:   RTE_Driver\UART_LPC17xx.c
 
-   * Component: Keil::Device:GPDMA:1.4.0
-      Include file:  RTE_Driver\GPDMA_LPC17xx.h
-      Source file:   RTE_Driver\GPDMA_LPC17xx.c
-Build Time Elapsed:  00:00:01
+   * Component: Keil::Device:PIN:1.0.0
+      Include file:  RTE_Driver\PIN_LPC17xx.h
+      Source file:   RTE_Driver\PIN_LPC17xx.c
+Build Time Elapsed:  00:00:11
 </pre>
 </body>
 </html>
