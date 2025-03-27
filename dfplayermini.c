@@ -1,16 +1,16 @@
 #include "dfplayermini.h"
 
-void Init_UART1(void){
-	Driver_USART1.Initialize(NULL);
-	Driver_USART1.PowerControl(ARM_POWER_FULL);
-	Driver_USART1.Control(	ARM_USART_MODE_ASYNCHRONOUS |
+void Init_UART3(void){
+	Driver_USART3.Initialize(NULL);
+	Driver_USART3.PowerControl(ARM_POWER_FULL);
+	Driver_USART3.Control(	ARM_USART_MODE_ASYNCHRONOUS |
 							ARM_USART_DATA_BITS_8		|
 							ARM_USART_STOP_BITS_1		|
 							ARM_USART_PARITY_NONE		|
 							ARM_USART_FLOW_CONTROL_NONE,
 							9600);
-	Driver_USART1.Control(ARM_USART_CONTROL_TX,1);
-	Driver_USART1.Control(ARM_USART_CONTROL_RX,1);
+	Driver_USART3.Control(ARM_USART_CONTROL_TX,1);
+	Driver_USART3.Control(ARM_USART_CONTROL_RX,1);
 }
 void DFPlayer_send_command(unsigned char command, unsigned const char param1, unsigned const char param2) {
 	
@@ -36,13 +36,13 @@ void DFPlayer_send_command(unsigned char command, unsigned const char param1, un
 		packet[7] = chkb1;
 		packet[8] = chkb2;
 		packet[9] = 0xEF; //bit de stop
-    while(Driver_USART1.GetStatus().tx_busy == 1); // attente buffer TX vide
-		Driver_USART1.Send(packet,10); //envoie du packet
+    while(Driver_USART3.GetStatus().tx_busy == 1); // attente buffer TX vide
+		Driver_USART3.Send(packet,10); //envoie du packet
 		osDelay(50);
 }
 
 void DFPlayer_init(){
-	Init_UART1();
+	Init_UART3();
 	DFPlayer_send_command(DFPLAYER_INIT, 0x00, 0x00); //Initialise le DFPlayer
 }
 void DFPlayer_set_volume(uint8_t volume){

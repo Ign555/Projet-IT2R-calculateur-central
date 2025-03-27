@@ -25,5 +25,5 @@ void DFPlayer_play_in_folder(uint8_t folder, uint8_t track);
 
 void DFPlayer_send_command(unsigned char command, unsigned const char param1, unsigned const char param2);
 
-extern ARM_DRIVER_USART Driver_USART1;
+extern ARM_DRIVER_USART Driver_USART3;
 #endif
