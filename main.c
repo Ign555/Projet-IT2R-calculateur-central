@@ -10,6 +10,7 @@
 #include "cmsis_os.h"                   // CMSIS RTOS header file
 #include "stdio.h"
 
+#include "reception_bluetooth.h"
 
 extern GLCD_FONT GLCD_Font_6x8;
 extern GLCD_FONT GLCD_Font_16x24;
