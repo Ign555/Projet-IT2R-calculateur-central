@@ -27,16 +27,32 @@ Project File Date:  03/27/2025
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-".\Objects\keil.axf" - 0 Error(s), 0 Warning(s).
+compiling main.c...
+pwm_moteur.h(14): warning:  #1295-D: Deprecated declaration init_servo_moteur - give arg types
+  void init_servo_moteur();
+pwm_moteur.h(15): warning:  #1295-D: Deprecated declaration init_moteur - give arg types
+  void init_moteur();
+pwm_moteur.h(32): warning:  #1-D: last line of file ends without a newline
+  ******************************************************************/
+dfplayermini.h(20): warning:  #1295-D: Deprecated declaration DFPlayer_init - give arg types
+  void DFPlayer_init();
+dfplayermini.h(21): warning:  #1295-D: Deprecated declaration DFPlayer_next - give arg types
+  void DFPlayer_next();
+dfplayermini.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif
+main.c: 6 warnings, 0 errors
+linking...
+Program Size: Code=17152 RO-data=1400 RW-data=92 ZI-data=31372  
+".\Objects\keil.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
                 http://www.keil.com/pack/ARM.CMSIS.5.6.0.pack
-                ::CMSIS:RTOS:1.0.0 (API)
+                ::CMSIS Driver:USART:2.3.0 (API)
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: RTOS Version: 1.0.0
    * Component: USART Version: 2.3.0
+   * Component: RTOS Version: 1.0.0
    * Component: CORE Version: 5.3.0
    * Component: Keil RTX Version: 4.82.0
 
@@ -45,9 +61,9 @@ Package Vendor: Keil
                 Keil::Device:PIN:1.0.0
                 NXP LPC1700 Series Device Support, Drivers and Examples for MCB1700 and LPC1788-32
    * Component: PIN Version: 1.0.0
+   * Component: GPIO Version: 1.1.0
    * Component: Startup Version: 1.0.0
    * Component: GPDMA Version: 1.4.0
-   * Component: GPIO Version: 1.1.0
    * Component: USART Version: 2.13.0
 
 <h2>Collection of Component include folders:</h2>
@@ -61,45 +77,45 @@ Package Vendor: Keil
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ::CMSIS:RTOS:1.0.0 (API)
-
    * Component: ::CMSIS Driver:USART:2.3.0 (API)
       Include file:  CMSIS\Driver\Include\Driver_USART.h
+
+   * Component: ::CMSIS:RTOS:1.0.0 (API)
 
    * Component: ARM::CMSIS:CORE:5.3.0
 
    * Component: ARM::CMSIS:RTOS:Keil RTX:4.82.0
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
       Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
-      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
       Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
-      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
       Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
+      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
+      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
 
    * Component: Keil::Device:PIN:1.0.0
-      Source file:   RTE_Driver\PIN_LPC17xx.c
       Include file:  RTE_Driver\PIN_LPC17xx.h
+      Source file:   RTE_Driver\PIN_LPC17xx.c
+
+   * Component: Keil::Device:GPIO:1.1.0
+      Source file:   RTE_Driver\GPIO_LPC17xx.c
+      Include file:  RTE_Driver\GPIO_LPC17xx.h
 
    * Component: Keil::Device:Startup:1.0.0
       Include file:  RTE_Driver\Config\RTE_Device.h
-      Source file:   Device\Source\system_LPC17xx.c
       Source file:   Device\Source\ARM\startup_LPC17xx.s
+      Source file:   Device\Source\system_LPC17xx.c
       Include file:  Device\Include\LPC17xx.h
 
    * Component: Keil::Device:GPDMA:1.4.0
       Include file:  RTE_Driver\GPDMA_LPC17xx.h
       Source file:   RTE_Driver\GPDMA_LPC17xx.c
-
-   * Component: Keil::Device:GPIO:1.1.0
-      Source file:   RTE_Driver\GPIO_LPC17xx.c
-      Include file:  RTE_Driver\GPIO_LPC17xx.h
 
    * Component: Keil::CMSIS Driver:USART:2.13.0
       Source file:   RTE_Driver\UART_LPC17xx.c

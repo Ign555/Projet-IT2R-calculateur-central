@@ -11,14 +11,6 @@
 #include "pwm_moteur.h"
 #include "dfplayermini.h"
 
- /*----------------------------------------------------------------------------
-  * Driver UART Extern
-  *---------------------------------------------------------------------------*/
-
-extern ARM_DRIVER_USART Driver_USART0;
-extern ARM_DRIVER_USART Driver_USART1;
-extern ARM_DRIVER_USART Driver_USART2;
-
 /*----------------------------------------------------------------------------
  * Task ID & DEF - RTOS
  *---------------------------------------------------------------------------*/
@@ -26,41 +18,44 @@ extern ARM_DRIVER_USART Driver_USART2;
 void TaskRFID ( void const * argument );
 void TaskDFPlayer ( void const * argument );
 void TaskMoteur (void const * argument );
+void TaskServoMoteur (void const * argument );
 
-osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR;
+osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_SERVOMOTEUR;
 
 osThreadDef ( TaskRFID, osPriorityNormal, 1, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
 osThreadDef ( TaskMoteur, osPriorityNormal, 1, 0);
+osThreadDef ( TaskServoMoteur, osPriorityNormal, 1, 0);
 
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MUTEX
  *---------------------------------------------------------------------------*/
-
+/*
 osMutexId ID_Mutex_PWM, ID_Mutex_UART;
 
 osMutexDef ( Mutex_PWM );
 osMutexDef ( Mutex_UART );
-
+*/
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MAILS BOXS
  *---------------------------------------------------------------------------*/
-
+/*
 osMailQId ID_RFID2DFPlayer, ID_ETAT_MOT, ID_Lumiere2DFPlayer, ID_Manette2DFPlayer;
 
 osMailQDef(RFID2DFPlayer, 1, uint8_t); // obj une boite au lettre la plus petite possible 
 osMailQDef(ETAT_MOT, 1, uint8_t);
 osMailQDef(Lumiere, 1, uint8_t);
 osMailQDef(Manette, 1, uint8_t);
-
+*/
 
 /*----------------------------------------------------------------------------
  * main: initialize and start the system
  *---------------------------------------------------------------------------*/
 int main (void) {
 	
-	//DF Player init
+	osKernelInitialize ();
 	
+	//DF Player init
 	DFPlayer_init();
 	
 	//Motor init
@@ -80,22 +75,24 @@ int main (void) {
 	osDelay(5000);
 	servo_moteur_set_duty(0.075);
 	
+	//DfPlayerInitProcess
 	DFPlayer_set_volume(30);
 	DFPlayer_play_in_folder(0x02, 0x02);
 	
 	//Init UART
-	Init_UART();
-	/*
-  osKernelInitialize ();
+	//Init_UART();
+	
+  
 	
 	ID_DFPlayer = osThreadCreate ( osThread ( TaskDFPlayer ), NULL);
 	ID_RFID = osThreadCreate ( osThread ( TaskRFID ), NULL);
 	ID_MOTEUR = osThreadCreate ( osThread ( TaskMoteur ), NULL);
+	ID_SERVOMOTEUR = osThreadCreate ( osThread ( TaskServoMoteur ), NULL);
 	
-	ID_Mutex_UART = osMutexCreate( osMutex( Mutex_UART));
+	//ID_Mutex_UART = osMutexCreate( osMutex( Mutex_UART));
 
   osKernelStart ();
-	*/
+	
 	osDelay(osWaitForever);
 	
 	return 0;
@@ -106,7 +103,7 @@ int main (void) {
  *---------------------------------------------------------------------------*/
 
 void TaskDFPlayer ( void const * argument ){
-	
+	/*
 	uint8_t * Reception_RFID, * Reception_Manette, * Reception_Moteur, * Reception_Lumiere;
 	
 	osEvent EV_RFID, EV_Manette, EV_Moteur, EV_Lumiere;
@@ -171,7 +168,7 @@ void TaskDFPlayer ( void const * argument ){
 			tempo(5);
 			osMutexRelease(ID_Mutex_UART);
 		}
-	}
+	}*/
 }
 
 
@@ -180,7 +177,7 @@ void TaskDFPlayer ( void const * argument ){
   *---------------------------------------------------------------------------*/
 
 void TaskRFID ( void const * argument ){
-	
+	/*
 	char BADGE[14] = {2,48,56,48,48,56,67,50,51,69,57,52,69,3};
 	
 	uint8_t * Reception ;
@@ -220,7 +217,7 @@ void TaskRFID ( void const * argument ){
 			osSignalWait( 0x0001, osWaitForever);
 			
 		}		
-	}
+	}*/
 }
 
 /*----------------------------------------------------------------------------
@@ -235,6 +232,25 @@ void TaskMoteur ( void const * argumsent ) {
 	Mot_Set_Duty(0.9); */
 	//Servo_Mot_Set_Duty(0.1);
 	
-	while (1);
+	while (1){
+		
+	}
+	
+}
+/*----------------------------------------------------------------------------
+ * Task SERVOMOTEUR
+ *---------------------------------------------------------------------------*/
+
+void TaskServoMoteur ( void const * argumsent ) {
+	/*
+	Servo_Mot_Initialize();
+	Mot_Initialize();
+	
+	Mot_Set_Duty(0.9); */
+	//Servo_Mot_Set_Duty(0.1);
+	
+	while (1){
+		
+	}
 	
 }
