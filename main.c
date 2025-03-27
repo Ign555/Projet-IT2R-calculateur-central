@@ -51,6 +51,7 @@ osMailQDef(Manette, 1, uint8_t);
 /*----------------------------------------------------------------------------
  * main: initialize and start the system
  *---------------------------------------------------------------------------*/
+
 int main (void) {
 	
 	osKernelInitialize ();
