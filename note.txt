@@ -1,1 +1,4 @@
 addr esclave : 1014:5:301377,1F00,7FFF
+
+Brochage UART :
+P2.0 et P2.1 réservé au module bluetooth
