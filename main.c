@@ -207,6 +207,9 @@ void TaskDFPlayer ( void const * argument ){
 			osMutexRelease(ID_Mutex_UART);
 		}
 	}*/
+	while(1){
+		
+	}
 }
 
 
@@ -256,6 +259,9 @@ void TaskRFID ( void const * argument ){
 			
 		}		
 	}*/
+	while(1){
+		
+	}
 }
 
 /*----------------------------------------------------------------------------
