@@ -22,32 +22,32 @@ Dialog DLL:      TARMP1.DLL V1.24.0.0
  
 <h2>Project:</h2>
 C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\nunchuck-reception.uvprojx
-Project File Date:  03/27/2025
+Project File Date:  03/28/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling reception_bluetooth.c...
-reception_bluetooth.h(11): warning:  #1-D: last line of file ends without a newline
-  #endif
-reception_bluetooth.c(6): error:  #20: identifier "texte" is undefined
-  		sprintf(texte,"Jx: %3d",tab[2]);
-reception_bluetooth.c(7): warning:  #223-D: function "GLCD_DrawString" declared implicitly
-  		GLCD_DrawString(1,1,texte);
-reception_bluetooth.c(17): warning:  #1-D: last line of file ends without a newline
-  }
-reception_bluetooth.c: 3 warnings, 1 error
 compiling main.c...
-reception_bluetooth.h(11): warning:  #1-D: last line of file ends without a newline
+reception_bluetooth.h(21): warning:  #1-D: last line of file ends without a newline
   #endif
-main.c(92): warning:  #177-D: variable "jx" was declared but never referenced
-  	char jx, jy, b;
-main.c(92): warning:  #177-D: variable "jy" was declared but never referenced
-  	char jx, jy, b;
-main.c(92): warning:  #177-D: variable "b" was declared but never referenced
-  	char jx, jy, b;
-main.c: 4 warnings, 0 errors
-".\Objects\nunchuck-reception.axf" - 1 Error(s), 7 Warning(s).
+main.c(82): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		RB_get_data(&jx, &jy, &b);
+main.c(82): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		RB_get_data(&jx, &jy, &b);
+main.c(82): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		RB_get_data(&jx, &jy, &b);
+main.c(79): warning:  #177-D: variable "tab" was declared but never referenced
+  	char tab[9], texte[30];
+main.c: 5 warnings, 0 errors
+compiling reception_bluetooth.c...
+reception_bluetooth.h(21): warning:  #1-D: last line of file ends without a newline
+  #endif
+reception_bluetooth.c(35): warning:  #1-D: last line of file ends without a newline
+  }
+reception_bluetooth.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=22148 RO-data=7284 RW-data=100 ZI-data=16588  
+".\Objects\nunchuck-reception.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -56,21 +56,21 @@ Package Vendor: ARM
                 ::CMSIS:RTOS:1.0.0 (API)
                 CMSIS (Cortex Microcontroller Software Interface Standard)
    * Component: RTOS Version: 1.0.0
-   * Component: USART Version: 2.3.0
    * Component: SPI Version: 2.2.0
+   * Component: USART Version: 2.3.0
    * Component: CORE Version: 5.3.0
    * Component: Keil RTX Version: 4.82.0
 
 Package Vendor: Keil
                 https://www.keil.com/pack/Keil.LPC1700_DFP.3.0.0.pack
-                Keil::Device:GPDMA:1.4.0
+                Keil::CMSIS Driver:USART:2.13.0
                 NXP LPC1700 Series Device Support, Drivers and Examples for MCB1700 and LPC1788-32
+   * Component: USART Version: 2.13.0
    * Component: GPDMA Version: 1.4.0
+   * Component: Startup Version: 1.0.0
+   * Component: GPIO Version: 1.1.0
    * Component: SSP Version: 2.10.0
    * Component: PIN Version: 1.0.0
-   * Component: GPIO Version: 1.1.0
-   * Component: USART Version: 2.13.0
-   * Component: Startup Version: 1.0.0
    * Component: Graphic LCD Version: 1.0.0
 
 Package Vendor: Keil
@@ -94,32 +94,45 @@ Package Vendor: Keil
 
    * Component: ::CMSIS:RTOS:1.0.0 (API)
 
-   * Component: ::CMSIS Driver:USART:2.3.0 (API)
-      Include file:  CMSIS\Driver\Include\Driver_USART.h
-
    * Component: ::CMSIS Driver:SPI:2.2.0 (API)
       Include file:  CMSIS\Driver\Include\Driver_SPI.h
+
+   * Component: ::CMSIS Driver:USART:2.3.0 (API)
+      Include file:  CMSIS\Driver\Include\Driver_USART.h
 
    * Component: ARM::CMSIS:CORE:5.3.0
 
    * Component: ARM::CMSIS:RTOS:Keil RTX:4.82.0
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
-      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
-      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
+      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
-      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
-      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
+      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
+      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
+
+   * Component: Keil::CMSIS Driver:USART:2.13.0
+      Source file:   RTE_Driver\UART_LPC17xx.c
 
    * Component: Keil::Device:GPDMA:1.4.0
       Include file:  RTE_Driver\GPDMA_LPC17xx.h
       Source file:   RTE_Driver\GPDMA_LPC17xx.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Source file:   Device\Source\system_LPC17xx.c
+      Include file:  RTE_Driver\Config\RTE_Device.h
+      Include file:  Device\Include\LPC17xx.h
+      Source file:   Device\Source\ARM\startup_LPC17xx.s
+
+   * Component: Keil::Device:GPIO:1.1.0
+      Source file:   RTE_Driver\GPIO_LPC17xx.c
+      Include file:  RTE_Driver\GPIO_LPC17xx.h
 
    * Component: Keil::CMSIS Driver:SPI:SSP:2.10.0
       Source file:   RTE_Driver\SSP_LPC17xx.c
@@ -128,29 +141,15 @@ Package Vendor: Keil
       Source file:   RTE_Driver\PIN_LPC17xx.c
       Include file:  RTE_Driver\PIN_LPC17xx.h
 
-   * Component: Keil::Device:GPIO:1.1.0
-      Include file:  RTE_Driver\GPIO_LPC17xx.h
-      Source file:   RTE_Driver\GPIO_LPC17xx.c
-
-   * Component: Keil::CMSIS Driver:USART:2.13.0
-      Source file:   RTE_Driver\UART_LPC17xx.c
-
-   * Component: Keil::Device:Startup:1.0.0
-      Include file:  Device\Include\LPC17xx.h
-      Source file:   Device\Source\system_LPC17xx.c
-      Source file:   Device\Source\ARM\startup_LPC17xx.s
-      Include file:  RTE_Driver\Config\RTE_Device.h
-
    * Component: Keil.MCB1700::Board Support:Graphic LCD:1.0.0
-      Source file:   Boards\Keil\MCB1700\Common\GLCD_Fonts.c
-      Source file:   Boards\Keil\MCB1700\Common\GLCD_MCB1700.c
       Include file:  Boards\Keil\MCB1700\Common\GLCD_Fonts.h
+      Source file:   Boards\Keil\MCB1700\Common\GLCD_MCB1700.c
       Include file:  Boards\Keil\MCB1700\Common\GLCD_Config.h
+      Source file:   Boards\Keil\MCB1700\Common\GLCD_Fonts.c
 
    * Component: ::Board Support:Graphic LCD:1.00 (API)
       Include file:  Board\Board_GLCD.h
-Target not created.
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
