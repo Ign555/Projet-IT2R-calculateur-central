@@ -2,7 +2,7 @@
  * CMSIS-RTOS 'main' function template
  *---------------------------------------------------------------------------*/
 
-//#define DEBUG //Uncomment for debbuging 
+#define DEBUG //Uncomment for debbuging 
 
 
 #define osObjectsPublic                     // define objects in main module

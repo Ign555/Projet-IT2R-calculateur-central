@@ -37,9 +37,35 @@ dfplayermini.h(29): warning:  #1-D: last line of file ends without a newline
 dfplayermini.c(61): warning:  #1-D: last line of file ends without a newline
   }
 dfplayermini.c: 4 warnings, 0 errors
+compiling main.c...
+pwm_moteur.h(14): warning:  #1295-D: Deprecated declaration init_servo_moteur - give arg types
+  void init_servo_moteur();
+pwm_moteur.h(15): warning:  #1295-D: Deprecated declaration init_moteur - give arg types
+  void init_moteur();
+pwm_moteur.h(32): warning:  #1-D: last line of file ends without a newline
+  ******************************************************************/
+dfplayermini.h(20): warning:  #1295-D: Deprecated declaration DFPlayer_init - give arg types
+  void DFPlayer_init();
+dfplayermini.h(21): warning:  #1295-D: Deprecated declaration DFPlayer_next - give arg types
+  void DFPlayer_next();
+dfplayermini.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif
+reception_bluetooth.h(21): warning:  #1-D: last line of file ends without a newline
+  #endif
+main.c(305): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		RB_get_data(&jx, &jy, &b);
+main.c(305): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		RB_get_data(&jx, &jy, &b);
+main.c(305): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		RB_get_data(&jx, &jy, &b);
+main.c(302): warning:  #177-D: variable "tab" was declared but never referenced
+  	char tab[9], texte[30];
+main.c(328): warning:  #1-D: last line of file ends without a newline
+  }
+main.c: 12 warnings, 0 errors
 linking...
-Program Size: Code=21948 RO-data=1548 RW-data=104 ZI-data=31408  
-".\Objects\keil.axf" - 0 Error(s), 4 Warning(s).
+Program Size: Code=25688 RO-data=7860 RW-data=116 ZI-data=31412  
+".\Objects\keil.axf" - 0 Error(s), 16 Warning(s).
 
 <h2>Software Packages used:</h2>
 
