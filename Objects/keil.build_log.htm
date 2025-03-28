@@ -22,28 +22,16 @@ Dialog DLL:      TARMP1.DLL V1.24.0.0
  
 <h2>Project:</h2>
 C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\keil.uvprojx
-Project File Date:  03/27/2025
+Project File Date:  03/28/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-compiling main.c...
-pwm_moteur.h(14): warning:  #1295-D: Deprecated declaration init_servo_moteur - give arg types
-  void init_servo_moteur();
-pwm_moteur.h(15): warning:  #1295-D: Deprecated declaration init_moteur - give arg types
-  void init_moteur();
-pwm_moteur.h(32): warning:  #1-D: last line of file ends without a newline
-  ******************************************************************/
-dfplayermini.h(20): warning:  #1295-D: Deprecated declaration DFPlayer_init - give arg types
-  void DFPlayer_init();
-dfplayermini.h(21): warning:  #1295-D: Deprecated declaration DFPlayer_next - give arg types
-  void DFPlayer_next();
-dfplayermini.h(29): warning:  #1-D: last line of file ends without a newline
-  #endif
-main.c: 6 warnings, 0 errors
+compiling SSP_LPC17xx.c...
+compiling UART_LPC17xx.c...
 linking...
-Program Size: Code=17152 RO-data=1400 RW-data=92 ZI-data=31372  
-".\Objects\keil.axf" - 0 Error(s), 6 Warning(s).
+Program Size: Code=21932 RO-data=1548 RW-data=104 ZI-data=31408  
+".\Objects\keil.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -52,19 +40,30 @@ Package Vendor: ARM
                 ::CMSIS Driver:USART:2.3.0 (API)
                 CMSIS (Cortex Microcontroller Software Interface Standard)
    * Component: USART Version: 2.3.0
+   * Component: SPI Version: 2.2.0
    * Component: RTOS Version: 1.0.0
    * Component: CORE Version: 5.3.0
    * Component: Keil RTX Version: 4.82.0
 
 Package Vendor: Keil
+                http://www.keil.com/pack/Keil.MDK-Middleware.7.0.0.pack
+                ::Board Support:Graphic LCD:1.00 (API)
+                Keil MDK-ARM Professional Middleware for ARM Cortex-M based devices
+   * Component: Graphic LCD Version: 1.00
+   * Component: Buttons Version: 1.00
+
+Package Vendor: Keil
                 https://www.keil.com/pack/Keil.LPC1700_DFP.3.0.0.pack
-                Keil::Device:PIN:1.0.0
+                Keil::Device:GPDMA:1.4.0
                 NXP LPC1700 Series Device Support, Drivers and Examples for MCB1700 and LPC1788-32
+   * Component: GPDMA Version: 1.4.0
+   * Component: SSP Version: 2.10.0
    * Component: PIN Version: 1.0.0
    * Component: GPIO Version: 1.1.0
-   * Component: Startup Version: 1.0.0
-   * Component: GPDMA Version: 1.4.0
    * Component: USART Version: 2.13.0
+   * Component: Startup Version: 1.0.0
+   * Component: Buttons Version: 1.0.0
+   * Component: Graphic LCD Version: 1.0.0
 
 <h2>Collection of Component include folders:</h2>
   C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE
@@ -72,13 +71,18 @@ Package Vendor: Keil
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\RTOS\RTX\INC
+  C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common
   C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include
   C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver
+  C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board
 
 <h2>Collection of Component Files used:</h2>
 
    * Component: ::CMSIS Driver:USART:2.3.0 (API)
       Include file:  CMSIS\Driver\Include\Driver_USART.h
+
+   * Component: ::CMSIS Driver:SPI:2.2.0 (API)
+      Include file:  CMSIS\Driver\Include\Driver_SPI.h
 
    * Component: ::CMSIS:RTOS:1.0.0 (API)
 
@@ -86,18 +90,31 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:RTOS:Keil RTX:4.82.0
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
-      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
-      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
-      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
       Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
-      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
+      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
+      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
+      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
+
+   * Component: ::Board Support:Graphic LCD:1.00 (API)
+      Include file:  Board\Board_GLCD.h
+
+   * Component: ::Board Support:Buttons:1.00 (API)
+      Include file:  Board\Board_Buttons.h
+
+   * Component: Keil::Device:GPDMA:1.4.0
+      Include file:  RTE_Driver\GPDMA_LPC17xx.h
+      Source file:   RTE_Driver\GPDMA_LPC17xx.c
+
+   * Component: Keil::CMSIS Driver:SPI:SSP:2.10.0
+      Source file:   RTE_Driver\SSP_LPC17xx.c
 
    * Component: Keil::Device:PIN:1.0.0
       Include file:  RTE_Driver\PIN_LPC17xx.h
@@ -107,19 +124,24 @@ Package Vendor: Keil
       Source file:   RTE_Driver\GPIO_LPC17xx.c
       Include file:  RTE_Driver\GPIO_LPC17xx.h
 
-   * Component: Keil::Device:Startup:1.0.0
-      Include file:  RTE_Driver\Config\RTE_Device.h
-      Source file:   Device\Source\ARM\startup_LPC17xx.s
-      Source file:   Device\Source\system_LPC17xx.c
-      Include file:  Device\Include\LPC17xx.h
-
-   * Component: Keil::Device:GPDMA:1.4.0
-      Include file:  RTE_Driver\GPDMA_LPC17xx.h
-      Source file:   RTE_Driver\GPDMA_LPC17xx.c
-
    * Component: Keil::CMSIS Driver:USART:2.13.0
       Source file:   RTE_Driver\UART_LPC17xx.c
-Build Time Elapsed:  00:00:00
+
+   * Component: Keil::Device:Startup:1.0.0
+      Include file:  Device\Include\LPC17xx.h
+      Source file:   Device\Source\ARM\startup_LPC17xx.s
+      Source file:   Device\Source\system_LPC17xx.c
+      Include file:  RTE_Driver\Config\RTE_Device.h
+
+   * Component: Keil.MCB1700::Board Support:Buttons:1.0.0
+      Source file:   Boards\Keil\MCB1700\Common\Buttons_MCB1700.c
+
+   * Component: Keil.MCB1700::Board Support:Graphic LCD:1.0.0
+      Source file:   Boards\Keil\MCB1700\Common\GLCD_MCB1700.c
+      Include file:  Boards\Keil\MCB1700\Common\GLCD_Config.h
+      Include file:  Boards\Keil\MCB1700\Common\GLCD_Fonts.h
+      Source file:   Boards\Keil\MCB1700\Common\GLCD_Fonts.c
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

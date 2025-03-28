@@ -436,11 +436,12 @@ rs\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE -IC:\Use
 rs\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\L
 PC1768 -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include -IC:\Keil_v5\AR
 M\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6
-.0\CMSIS\RTOS\RTX\INC -IC:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Inclu
-de -IC:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver --predefine="__RTX S
-ETA 1" --predefine="__UVISION_VERSION SETA 517" --predefine="_RTE_ SETA 1" --pr
-edefine="LPC175x_6x SETA 1" --list=.\listings\startup_lpc17xx.lst RTE\Device\LP
-C1768\startup_LPC17xx.s
+.0\CMSIS\RTOS\RTX\INC -IC:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\
+MCB1700\Common -IC:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include -IC:
+\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver -IC:\Keil_v5\ARM\PACK\Keil\
+MDK-Middleware\7.0.0\Board --predefine="__RTX SETA 1" --predefine="__UVISION_VE
+RSION SETA 517" --predefine="_RTE_ SETA 1" --predefine="LPC175x_6x SETA 1" --li
+st=.\listings\startup_lpc17xx.lst RTE\Device\LPC1768\startup_LPC17xx.s
 
 
 

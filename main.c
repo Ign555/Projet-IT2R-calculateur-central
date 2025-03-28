@@ -2,6 +2,9 @@
  * CMSIS-RTOS 'main' function template
  *---------------------------------------------------------------------------*/
 
+//#define DEBUG //Uncomment for debbuging 
+
+
 #define osObjectsPublic                     // define objects in main module
 #include "osObjects.h"                      // RTOS object definitions
 #include "LPC17xx.h"                    		// Device header
@@ -10,22 +13,41 @@
 #include "Lib_UART.h"
 #include "pwm_moteur.h"
 #include "dfplayermini.h"
+#include "reception_bluetooth.h"
 
+/********Debug include********/
+#ifdef DEBUG
+	#include "Board_GLCD.h"                 // ::Board Support:Graphic LCD 
+	#include "GLCD_Config.h"                // Keil.MCB1700::Board Support:Graphic LCD
+#endif
+//Font for debbuing
+#ifdef DEBUG
+	extern GLCD_FONT GLCD_Font_6x8;
+	extern GLCD_FONT GLCD_Font_16x24;
+#endif
 /*----------------------------------------------------------------------------
  * Task ID & DEF - RTOS
  *---------------------------------------------------------------------------*/
 
+void TaskReceptionBT (void const * argument );
 void TaskRFID ( void const * argument );
 void TaskDFPlayer ( void const * argument );
 void TaskMoteur (void const * argument );
 void TaskServoMoteur (void const * argument );
 
-osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_SERVOMOTEUR;
+osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_SERVOMOTEUR, ID_RECEPTIONBT;
 
 osThreadDef ( TaskRFID, osPriorityNormal, 1, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
+osThreadDef ( TaskReceptionBT, osPriorityNormal, 1, 0);
 osThreadDef ( TaskMoteur, osPriorityNormal, 1, 0);
 osThreadDef ( TaskServoMoteur, osPriorityNormal, 1, 0);
+
+/*----------------------------------------------------------------------------
+ * Event/CB function prototype
+ *---------------------------------------------------------------------------*/
+void RB_event(uint32_t event);
+
 
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MUTEX
@@ -56,6 +78,16 @@ int main (void) {
 	
 	osKernelInitialize ();
 	
+	
+	/********Init for debbuging (it means you can comment it dummy)********/
+	#ifdef DEBUG
+		GLCD_Initialize();
+		GLCD_ClearScreen();
+		GLCD_SetFont(&GLCD_Font_16x24);
+		GLCD_SetForegroundColor(GLCD_COLOR_BLACK);
+	#endif
+	/********Normal Init********/
+	
 	//DF Player init
 	DFPlayer_init();
 	
@@ -65,6 +97,9 @@ int main (void) {
 	moteur_set_duty(0);
 	moteur_set_direction(0);
 	servo_moteur_set_duty(0.075);
+	
+	//Bluetooth Reception Init
+	RB_init(RB_event);
 	
 	//Motor init process
 	osDelay(5000);
@@ -80,6 +115,7 @@ int main (void) {
 	DFPlayer_set_volume(30);
 	DFPlayer_play_in_folder(0x02, 0x02);
 	
+	
 	//Init UART
 	//Init_UART();
 	
@@ -89,6 +125,7 @@ int main (void) {
 	ID_RFID = osThreadCreate ( osThread ( TaskRFID ), NULL);
 	ID_MOTEUR = osThreadCreate ( osThread ( TaskMoteur ), NULL);
 	ID_SERVOMOTEUR = osThreadCreate ( osThread ( TaskServoMoteur ), NULL);
+	ID_RECEPTIONBT = osThreadCreate ( osThread ( TaskReceptionBT ), NULL);
 	
 	//ID_Mutex_UART = osMutexCreate( osMutex( Mutex_UART));
 
@@ -254,4 +291,38 @@ void TaskServoMoteur ( void const * argumsent ) {
 		
 	}
 	
+}
+/*----------------------------------------------------------------------------
+ * Task RECEPTIONBT
+ *---------------------------------------------------------------------------*/
+
+void TaskReceptionBT (void const * argument ){
+	
+	
+	char tab[9], texte[30];
+	char jx, jy, b;
+  while (1) {
+		RB_get_data(&jx, &jy, &b);
+		
+		#ifdef DEBUG
+			sprintf(texte,"Jx: %3d",jx);
+			GLCD_DrawString(1,1,texte);
+			sprintf(texte,"Jy: %3d",jy);
+			GLCD_DrawString(1,100,texte);		
+			sprintf(texte,"B: %3d",b);
+			GLCD_DrawString(1,200,texte);		
+		#endif
+	}
+	
+}
+
+/*----------------------------------------------------------------------------
+ * UART Event function
+ *---------------------------------------------------------------------------*/
+void RB_event(uint32_t event){
+	switch (event) {
+		case ARM_USART_EVENT_RECEIVE_COMPLETE : 	osSignalSet(ID_RECEPTIONBT, 0x01);
+																							break;
+		default : break;
+	}	
 }
