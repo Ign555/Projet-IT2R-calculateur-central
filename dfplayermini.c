@@ -38,7 +38,8 @@ void DFPlayer_send_command(unsigned char command, unsigned const char param1, un
 		packet[9] = 0xEF; //bit de stop
     while(Driver_USART3.GetStatus().tx_busy == 1); // attente buffer TX vide
 		Driver_USART3.Send(packet,10); //envoie du packet
-		osDelay(50);
+		while(Driver_USART3.GetStatus().tx_busy == 1); // attente buffer TX vide
+		osDelay(100);
 }
 
 void DFPlayer_init(){
