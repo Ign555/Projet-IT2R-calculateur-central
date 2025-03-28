@@ -61,14 +61,15 @@ osMutexDef ( Mutex_UART );
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MAILS BOXS
  *---------------------------------------------------------------------------*/
-/*
-osMailQId ID_RFID2DFPlayer, ID_ETAT_MOT, ID_Lumiere2DFPlayer, ID_Manette2DFPlayer;
 
+osMailQId ID_RFID2DFPlayer, ID_ETAT_MOT, ID_Lumiere2DFPlayer, ID_RB_JOYSTICK, ID_RB_BUTTON;
+/*
 osMailQDef(RFID2DFPlayer, 1, uint8_t); // obj une boite au lettre la plus petite possible 
 osMailQDef(ETAT_MOT, 1, uint8_t);
 osMailQDef(Lumiere, 1, uint8_t);
-osMailQDef(Manette, 1, uint8_t);
 */
+osMailQDef(rb_joystick, 1, JoystickPosition);
+
 
 /*----------------------------------------------------------------------------
  * main: initialize and start the system
@@ -94,7 +95,6 @@ int main (void) {
 	//Motor init
 	init_servo_moteur();
 	init_moteur();
-	moteur_set_duty(0);
 	moteur_set_direction(0);
 	servo_moteur_set_duty(0.075);
 	
@@ -110,11 +110,10 @@ int main (void) {
 	servo_moteur_set_duty(0.05);
 	osDelay(5000);
 	servo_moteur_set_duty(0.075);
-	
+
 	//DfPlayerInitProcess
 	DFPlayer_set_volume(30);
 	DFPlayer_play_in_folder(0x02, 0x02);
-	
 	
 	//Init UART
 	//Init_UART();
@@ -128,7 +127,8 @@ int main (void) {
 	ID_RECEPTIONBT = osThreadCreate ( osThread ( TaskReceptionBT ), NULL);
 	
 	//ID_Mutex_UART = osMutexCreate( osMutex( Mutex_UART));
-
+	ID_RB_JOYSTICK = osMailCreate(osMailQ(rb_joystick), NULL);
+	
   osKernelStart ();
 	
 	osDelay(osWaitForever);
@@ -208,7 +208,7 @@ void TaskDFPlayer ( void const * argument ){
 		}
 	}*/
 	while(1){
-		
+		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
 	}
 }
 
@@ -260,7 +260,7 @@ void TaskRFID ( void const * argument ){
 		}		
 	}*/
 	while(1){
-		
+		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
 	}
 }
 
@@ -269,15 +269,22 @@ void TaskRFID ( void const * argument ){
  *---------------------------------------------------------------------------*/
 
 void TaskMoteur ( void const * argumsent ) {
+	
+	JoystickPosition *jp;
+	osEvent mailJoystick;
 	/*
 	Servo_Mot_Initialize();
 	Mot_Initialize();
 	
 	Mot_Set_Duty(0.9); */
 	//Servo_Mot_Set_Duty(0.1);
-	
 	while (1){
-		
+		mailJoystick = osMailGet(ID_RB_JOYSTICK, osWaitForever);
+		jp = mailJoystick.value.p;
+		moteur_set_duty(jp->y/300.0);
+		//moteur_set_duty(0.5);
+		osMailFree(ID_RB_JOYSTICK, jp);
+//		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
 	}
 	
 }
@@ -294,7 +301,7 @@ void TaskServoMoteur ( void const * argumsent ) {
 	//Servo_Mot_Set_Duty(0.1);
 	
 	while (1){
-		
+		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
 	}
 	
 }
@@ -304,20 +311,27 @@ void TaskServoMoteur ( void const * argumsent ) {
 
 void TaskReceptionBT (void const * argument ){
 	
+	//Sémaphore ou mutext à mettre
+	JoystickPosition *jp;
 	
 	char tab[9], texte[30];
-	char jx, jy, b;
+	uint8_t b;
+	
+	
+	
   while (1) {
-		RB_get_data(&jx, &jy, &b);
+		
+		jp = osMailAlloc(ID_RB_JOYSTICK, 100);
+		RB_get_data(&jp->x, &jp->y, &b);
+		
 		
 		#ifdef DEBUG
-			sprintf(texte,"Jx: %3d",jx);
+			sprintf(texte,"Jx: %3d Jy: %3d",jp->x, jp->y);
 			GLCD_DrawString(1,1,texte);
-			sprintf(texte,"Jy: %3d",jy);
-			GLCD_DrawString(1,100,texte);		
-			sprintf(texte,"B: %3d",b);
-			GLCD_DrawString(1,200,texte);		
+			sprintf(texte,"B: %3d", b);
+			GLCD_DrawString(1,32,texte);
 		#endif
+		osMailPut(ID_RB_JOYSTICK, jp);
 	}
 	
 }

@@ -37,12 +37,12 @@ void moteur_set_direction(char dir)
 {
 		
 		if(dir==1){
-			LPC_GPIO0->FIOPIN2 |= 0x01;
-			LPC_GPIO0->FIOPIN2 &= 0xFD;	
+			LPC_GPIO0->FIOPIN2 = 0x01;
+			//LPC_GPIO0->FIOPIN2 &= 0xFD;	
 
 		}else{
-			LPC_GPIO0->FIOPIN2 |= 0x02;
-			LPC_GPIO0->FIOPIN2 &= 0xFE;	
+			LPC_GPIO0->FIOPIN2 = 0x02;
+			//LPC_GPIO0->FIOPIN2 &= 0xFE;	
 		}
 
 }	

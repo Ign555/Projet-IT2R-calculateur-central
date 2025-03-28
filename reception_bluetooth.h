@@ -12,6 +12,13 @@ RB stand for "Réception  Bluetooth"
 #ifndef RB_H
 #define RB_H
 
+//Définition d'une structure pour stocker la position du joystick
+typedef struct JoystickPosition
+{
+	uint8_t x, y;
+}JoystickPosition;
+
+
 void RB_init(void (event_UART)(uint32_t event)); //Mettre en paramètre le nom de la fonction qui gère l'évènement ( fonction CB )
 
 //à mettre dans un thread réveillé par une fonction de callback
