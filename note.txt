@@ -1,7 +1,0 @@
-addr esclave : 1014:5:301377,1F00,7FFF
-
-Brochage UART :
-UART0 : P0.2 et P0.3 réservé au LIDAR
-UART1 : P2.0 et P2.1 réservé au module bluetooth
-UART2 : P0.10 et P0.11 réservé au RFID
-UART3 : P0.0 DFPlayerMini
