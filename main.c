@@ -272,16 +272,35 @@ void TaskMoteur ( void const * argumsent ) {
 	
 	JoystickPosition *jp;
 	osEvent mailJoystick;
+	float motor_duty_cycle = 0;
+	char tab[9], texte[30];
 	/*
 	Servo_Mot_Initialize();
 	Mot_Initialize();
 	
 	Mot_Set_Duty(0.9); */
 	//Servo_Mot_Set_Duty(0.1);
+	
 	while (1){
+		
 		mailJoystick = osMailGet(ID_RB_JOYSTICK, osWaitForever);
 		jp = mailJoystick.value.p;
-		moteur_set_duty(jp->y/300.0);
+		
+		
+		if(jp->y  < 144){
+				moteur_set_direction(1);
+				motor_duty_cycle = (1 - ((jp->y+111)/255.0));
+		}else if(jp->y > 192){
+				moteur_set_direction(0);
+				motor_duty_cycle = 0.5*jp->y/255.0;
+		}else{
+				motor_duty_cycle = 0;
+		}
+		
+		moteur_set_duty(motor_duty_cycle);
+		
+		servo_moteur_set_duty(0.075 + ((jp->x - 127)/255.0)*0.025);
+		
 		//moteur_set_duty(0.5);
 		osMailFree(ID_RB_JOYSTICK, jp);
 //		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
@@ -312,18 +331,20 @@ void TaskServoMoteur ( void const * argumsent ) {
 void TaskReceptionBT (void const * argument ){
 	
 	//Sémaphore ou mutext à mettre
-	JoystickPosition *jp;
+	JoystickPosition *jp, jp_prev;
 	
 	char tab[9], texte[30];
 	uint8_t b;
 	
-	
-	
   while (1) {
 		
 		jp = osMailAlloc(ID_RB_JOYSTICK, 100);
-		RB_get_data(&jp->x, &jp->y, &b);
 		
+		if(RB_get_data(&jp->x, &jp->y, &b) < 0){
+			//Anti sacades
+			jp->x = jp_prev.x;
+			jp->y = jp_prev.y;
+		}
 		
 		#ifdef DEBUG
 			sprintf(texte,"Jx: %3d Jy: %3d",jp->x, jp->y);
@@ -331,7 +352,12 @@ void TaskReceptionBT (void const * argument ){
 			sprintf(texte,"B: %3d", b);
 			GLCD_DrawString(1,32,texte);
 		#endif
+		
+		jp_prev.x = jp->x;
+		jp_prev.y = jp->y;
+		
 		osMailPut(ID_RB_JOYSTICK, jp);
+		
 	}
 	
 }

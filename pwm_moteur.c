@@ -5,7 +5,7 @@ float servo_duty = 0.5;
 void init_moteur(){
 	LPC_SC->PCONP = LPC_SC->PCONP | 0x00000040;   // enable PWM1
 	LPC_PWM1->PR = 0;  // prescaler
-	LPC_PWM1->MR0 = 999;    // MR0+1=100   la période de la PWM vaut 50ms 20000hz 1249
+	LPC_PWM1->MR0 = 999;    // MR0+1=100   la période de la PWM vaut 50ms 25000hz 1249
 	
 	LPC_PWM1->MCR = LPC_PWM1->MCR | 0x00000002; // Compteur relancé quand MR0 repasse à 0
 	LPC_PWM1->LER = LPC_PWM1->LER | 0x0000000F;  // ceci donne le droit de modifier dynamiquement la valeur du rapport cyclique
