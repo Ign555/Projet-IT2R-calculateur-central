@@ -1,31 +1,67 @@
-#include "Board_GLCD.h"
 #include "Board_ADC.h"
-#include "GLCD_Config.h"
-#include "stdio.h"  
+#include "stdio.h"
+#include "stm32f4xx_hal.h"
+#include "Board_LED.h"
+#include "cmsis_os.h"
+
+void light_Task(void *argument);
+void humidity_Task(void *argument);
+
+osThreadId ID_light, ID_humidity;
+
+osThreadDef( light_Task, osPriorityNormal, 1, 0);
+osThreadDef( humidity_Task, osPriorityNormal, 1, 0);
+
+osMailQId ID_Light2Lumiere, ID_Humidiy2IHM;
+
+osMailQDef(Ligh2Lumiere, 16, char);
+osMailQDef(Humidity2IHM, 16, int);
 
 
-extern GLCD_FONT GLCD_Font_6x8;
-extern GLCD_FONT GLCD_Font_16x24;
+int main(void) {
+    HAL_Init();
+    LED_Initialize();
+    ADC_Initialize();
+    osKernelInitialize();
+	  ID_light = osThreadCreate ( osThread ( light_Task), NULL);
+    ID_humidity = osThreadCreate ( osThread ( humidity_Task), NULL);
+    osKernelStart();
+}
 
-int main (void)
-{
-	int AD_last;
-	int status;
-	char out[32];
-	GLCD_Initialize();
-	GLCD_SetFont(&GLCD_Font_16x24);
-	GLCD_ClearScreen();
-	ADC_Initialize ();
+
+void light_Task(void *argument) {
+	 int * Envoie_l ;
+	 int AD_last_l;
+   LED_Initialize();
+   ADC_Initialize ();
+   while(1) {
 	
-	while(1)
-	{
-		ADC_StartConversion();
-		GLCD_DrawString(0, 24, "conversion en cours");
-		while(ADC_ConversionDone());
-		GLCD_DrawString(0, 24, "conversion finie      ");
-		AD_last = ADC_GetValue();  
-    sprintf(out, "ADC: %04d", AD_last); 
-    GLCD_DrawString(0, 2*24, out);
-
+	   ADC_StartConversion();
+	   while(ADC_ConversionDone());
+	   AD_last_l = ADC_GetValue(); 
+		 
+		 if (AD_last_l <= 2000){
+			 Envoie_l = osMailAlloc(ID_Light2Lumiere, osWaitForever);
+			 * Envoie_l = AD_last_l; // à modifier 
+			 osMailPut(ID_Light2Lumiere, Envoie_l);		 
+		 }
+	}
+}
+void humidity_Task(void *argument) {
+	 int * Envoie_h ;
+	 int AD_last_h;
+   LED_Initialize();
+   ADC_Initialize ();
+   while(1) {
+		 
+		 ADC_StartConversion();
+		 while(ADC_ConversionDone());
+		 AD_last_h = ADC_GetValue();
+		 
+		 if (AD_last_h <= 200){
+	 	  	Envoie_h = osMailAlloc(ID_Humidiy2IHM, osWaitForever);
+		   	* Envoie_h = AD_last_h; // à modifier 
+		  	osMailPut(ID_Humidiy2IHM, Envoie_h);		 
+		 }
 	}
 }
