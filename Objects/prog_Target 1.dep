@@ -1,28 +1,36 @@
 Dependencies for Project 'prog', Target 'Target 1': (DO NOT MODIFY !)
-F (.\baseUART.c)(0x67EC1B10)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\LPC1768-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver-I C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board-D__UVISION_VERSION="517" -D_RTE_ -DLPC175x_6x-o .\objects\baseuart.o --omf_browse .\objects\baseuart.crf --depend .\objects\baseuart.d)
-I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_USART.h)(0x5C8A86EC)
-I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_Common.h)(0x5C8A86EC)
-I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x55DB7FDE)
-I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x55DB7FE0)
-I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x55DB7FD6)
+F (.\baseUART.c)(0x67EC200E)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\LPC1768-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver-I C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board-D__UVISION_VERSION="517" -D_RTE_ -DLPC175x_6x-o .\objects\baseuart.o --omf_browse .\objects\baseuart.crf --depend .\objects\baseuart.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x55DB7FD6)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include\LPC17xx.h)(0x665797AC)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm3.h)(0x5D25E516)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x55DB7FE0)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h)(0x5D25E516)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5D25E516)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5D25E516)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h)(0x5C8FB044)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include\system_LPC17xx.h)(0x665797AC)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver\PIN_LPC17xx.h)(0x665797AC)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x55DB7FD6)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver\GPIO_LPC17xx.h)(0x665797AC)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x55DB7FD8)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common\GLCD_Config.h)(0x665797AA)
 I (C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board\Board_GLCD.h)(0x53BB76B2)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver\SSP_LPC17xx.h)(0x665797AC)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_SPI.h)(0x5C8A86EC)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_Common.h)(0x5C8A86EC)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x55DB7FDE)
 I (C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\LPC1768\RTE_Device.h)(0x67EC1A1B)
 I (C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\RTE_Components.h)(0x67EC1880)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common\GLCD_Fonts.h)(0x665797AA)
+I (module_rfid.h)(0x67EC1F33)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_USART.h)(0x5C8A86EC)
+F (.\module_rfid.c)(0x67EC1F24)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\LPC1768-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver-I C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board-D__UVISION_VERSION="517" -D_RTE_ -DLPC175x_6x-o .\objects\module_rfid.o --omf_browse .\objects\module_rfid.crf --depend .\objects\module_rfid.d)
+I (module_rfid.h)(0x67EC1F33)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_USART.h)(0x5C8A86EC)
+I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_Common.h)(0x5C8A86EC)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x55DB7FDE)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x55DB7FE0)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x55DB7FD6)
 F (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common\GLCD_Fonts.c)(0x665797AA)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE-I C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\LPC1768-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Device\Include-I C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver-I C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board-D__UVISION_VERSION="517" -D_RTE_ -DLPC175x_6x-o .\objects\glcd_fonts.o --omf_browse .\objects\glcd_fonts.crf --depend .\objects\glcd_fonts.d)
 I (C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common\GLCD_Fonts.h)(0x665797AA)
 I (C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board\Board_GLCD.h)(0x53BB76B2)

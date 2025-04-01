@@ -28,12 +28,16 @@ Project File Date:  04/01/2025
 *** Using Compiler 'V5.06 update 1 (build 61)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling baseUART.c...
-baseUART.c(64): warning:  #111-D: statement is unreachable
+module_rfid.h(7): warning:  #1295-D: Deprecated declaration RFID_init - give arg types
+  void RFID_init();
+module_rfid.h(13): warning:  #1-D: last line of file ends without a newline
+  #endif
+baseUART.c(47): warning:  #111-D: statement is unreachable
   	return 0;
-baseUART.c: 1 warning, 0 errors
+baseUART.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=19864 RO-data=7384 RW-data=52 ZI-data=972  
-".\Objects\prog.axf" - 0 Error(s), 1 Warning(s).
+Program Size: Code=19872 RO-data=7384 RW-data=52 ZI-data=972  
+".\Objects\prog.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
