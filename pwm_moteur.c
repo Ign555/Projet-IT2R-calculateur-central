@@ -1,7 +1,5 @@
 #include "pwm_moteur.h"
 
-float servo_duty = 0.5;
-
 void init_moteur(){
 	LPC_SC->PCONP = LPC_SC->PCONP | 0x00000040;   // enable PWM1
 	LPC_PWM1->PR = 0;  // prescaler
@@ -24,7 +22,7 @@ void init_servo_moteur()
 	LPC_TIM0->EMR=0x00C0; 
 	LPC_SC->PCONP = LPC_SC->PCONP | 0x00000002;   
 	LPC_TIM0->PR = 4;  // le registre PR prend la valeur du prescaler
-	LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*(1-servo_duty));
+	LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*0.075);
 	LPC_TIM0->MCR=LPC_TIM0->MCR | 0x00000003;
 	LPC_TIM0->TCR = 1;  
 	NVIC_SetPriority(TIMER0_IRQn,0); // TIMER0 (IRQ1) : interruption de priorité 0
@@ -50,16 +48,20 @@ void moteur_set_direction(char dir)
 
 
 void servo_moteur_set_duty(float duty){
-	servo_duty = duty;
+	
+	LPC_TIM0->MCR &= ~0x00000003; //Disable timer interrupt
+	LPC_TIM0->EMR=0x00C0;  //Clear mat0
+	LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*duty); //Set new mr0
+	LPC_TIM0->MCR=LPC_TIM0->MCR | 0x00000003;  //enable timer interrupt
+	LPC_TIM0->TC = 0; // Reset timer counter
+	LPC_TIM0->TCR = 1; //Start timer
+	
+	
 }
 void TIMER0_IRQHandler(void) // Fonction qui gère le pwm du servo moteur
 {
 	LPC_TIM0->IR = (1<<0); //baisse le drapeau dû à MR0
-	if(LPC_TIM0->MR0 == (int)(__50HZ_FRQ_MR__*servo_duty)){
-		LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*(1-servo_duty));
-	}else{
-		LPC_TIM0->MR0 = (int)(__50HZ_FRQ_MR__*servo_duty);
-	}
+	LPC_TIM0->MR0 = (__50HZ_FRQ_MR__ - LPC_TIM0->MR0);
 	LPC_TIM0->TCR = 1; 
 
 }

@@ -40,7 +40,7 @@ osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_SERVOMOTEUR, ID_RECEPTIONBT;
 osThreadDef ( TaskRFID, osPriorityNormal, 1, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
 osThreadDef ( TaskReceptionBT, osPriorityNormal, 1, 0);
-osThreadDef ( TaskMoteur, osPriorityNormal, 1, 0);
+osThreadDef ( TaskMoteur, osPriorityAboveNormal, 1, 0);
 osThreadDef ( TaskServoMoteur, osPriorityNormal, 1, 0);
 
 /*----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ osMailQDef(RFID2DFPlayer, 1, uint8_t); // obj une boite au lettre la plus petite
 osMailQDef(ETAT_MOT, 1, uint8_t);
 osMailQDef(Lumiere, 1, uint8_t);
 */
-osMailQDef(rb_joystick, 1, JoystickPosition);
+osMailQDef(rb_joystick, 8, JoystickPosition);
 
 
 /*----------------------------------------------------------------------------
@@ -299,7 +299,7 @@ void TaskMoteur ( void const * argumsent ) {
 		
 		moteur_set_duty(motor_duty_cycle);
 		
-		servo_moteur_set_duty(0.075 + ((127 - jp->x)/255.0)*0.025);
+		servo_moteur_set_duty(0.075 + ((127 - (jp->x-15))/255.0)*0.025);
 		
 		//moteur_set_duty(0.5);
 		osMailFree(ID_RB_JOYSTICK, jp);
