@@ -299,7 +299,7 @@ void TaskMoteur ( void const * argumsent ) {
 		
 		moteur_set_duty(motor_duty_cycle);
 		
-		servo_moteur_set_duty(0.075 + ((jp->x - 127)/255.0)*0.025);
+		servo_moteur_set_duty(0.075 + ((127 - jp->x)/255.0)*0.025);
 		
 		//moteur_set_duty(0.5);
 		osMailFree(ID_RB_JOYSTICK, jp);
