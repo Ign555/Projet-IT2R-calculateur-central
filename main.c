@@ -47,7 +47,7 @@ osThreadDef ( TaskServoMoteur, osPriorityNormal, 1, 0);
  * Event/CB function prototype
  *---------------------------------------------------------------------------*/
 void RB_event(uint32_t event);
-
+void RFID_event(uint32_t event);
 
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MUTEX
@@ -325,7 +325,7 @@ void TaskServoMoteur ( void const * argumsent ) {
 	
 }
 /*----------------------------------------------------------------------------
- * Task RECEPTIONBT
+ * Task RECEPTIONBT - CB 
  *---------------------------------------------------------------------------*/
 
 void TaskReceptionBT (void const * argument ){
@@ -361,11 +361,36 @@ void TaskReceptionBT (void const * argument ){
 	}
 	
 }
+/*----------------------------------------------------------------------------
+ * Task READRFID - CB 
+ *---------------------------------------------------------------------------*/
 
+void TaskReadRFID (void const * argument ){
+	
+	//Sémaphore ou mutext à mettre
+	JoystickPosition *jp, jp_prev;
+	
+	char buff_badge[14];
+	
+  while (1) {
+		
+		
+
+		
+	}
+	
+}
 /*----------------------------------------------------------------------------
  * UART Event function
  *---------------------------------------------------------------------------*/
 void RB_event(uint32_t event){
+	switch (event) {
+		case ARM_USART_EVENT_RECEIVE_COMPLETE : 	osSignalSet(ID_RECEPTIONBT, 0x01);
+																							break;
+		default : break;
+	}	
+}
+void RFID_event(uint32_t event){
 	switch (event) {
 		case ARM_USART_EVENT_RECEIVE_COMPLETE : 	osSignalSet(ID_RECEPTIONBT, 0x01);
 																							break;

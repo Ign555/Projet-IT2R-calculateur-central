@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\keil.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\keil.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Apr 01 18:29:03 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Tue Apr 01 19:29:54 2025
 <BR><P>
 <H3>Maximum Stack Usage =        168 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -601,9 +601,9 @@ Global Symbols
 <P><STRONG><a name="[f8]"></a>__aeabi_memclr4</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, rt_memclr_w.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = __aeabi_memclr4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_PowerControl
+<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Control
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_PowerControl
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Initialize
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Control
 </UL>
 
 <P><STRONG><a name="[1a7]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 4 bytes, rt_memclr_w.o(.text), UNUSED)
@@ -755,11 +755,11 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_Channel_active_flag
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Transfer
+<BR>[Called By]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Transfer
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Send
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Receive
-<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
-<LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
 </UL>
 
 <P><STRONG><a name="[e3]"></a>GPDMA_ChannelDisable</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelDisable))
@@ -767,10 +767,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clear_Channel_active_flag
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_PowerControl
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Control
+<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Control
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PowerControl
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_PowerControl
 </UL>
 
 <P><STRONG><a name="[fa]"></a>GPDMA_ChannelGetCount</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, gpdma_lpc17xx.o(i.GPDMA_ChannelGetCount))
@@ -784,16 +784,16 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Initialize
-<LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
+<BR>[Called By]<UL><LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Initialize
 </UL>
 
 <P><STRONG><a name="[fb]"></a>GPDMA_PeripheralSelect</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_PeripheralSelect))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = GPDMA_PeripheralSelect
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Initialize
-<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
+<BR>[Called By]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Send
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Receive
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Initialize
 </UL>
 
 <P><STRONG><a name="[e6]"></a>GPDMA_Uninitialize</STRONG> (Thumb, 116 bytes, Stack size 8 bytes, gpdma_lpc17xx.o(i.GPDMA_Uninitialize))
@@ -801,8 +801,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Uninitialize
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
+<BR>[Called By]<UL><LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Uninitialize
 </UL>
 
 <P><STRONG><a name="[160]"></a>GPIO_PinRead</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, gpio_lpc17xx.o(i.GPIO_PinRead))
@@ -846,9 +846,7 @@ Global Symbols
 <P><STRONG><a name="[da]"></a>PIN_Configure</STRONG> (Thumb, 246 bytes, Stack size 24 bytes, pin_lpc17xx.o(i.PIN_Configure))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PIN_Configure
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Uninitialize
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Initialize
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Control
+<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Control
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rd_id_man
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_Initialize
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Uninitialize
@@ -856,6 +854,8 @@ Global Symbols
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_PIN_Configure
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Initialize
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Control
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Uninitialize
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSPx_Initialize
 </UL>
 
 <P><STRONG><a name="[3e]"></a>RB_event</STRONG> (Thumb, 26 bytes, Stack size 8 bytes, main.o(i.RB_event))
@@ -2294,8 +2294,8 @@ Local Symbols
 <P><STRONG><a name="[f3]"></a>SSPx_PowerControl</STRONG> (Thumb, 466 bytes, Stack size 16 bytes, ssp_lpc17xx.o(i.SSPx_PowerControl))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SSPx_PowerControl &rArr; GPDMA_ChannelDisable
 </UL>
-<BR>[Calls]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
-<LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
+<BR>[Calls]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPDMA_ChannelDisable
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSP1_PowerControl

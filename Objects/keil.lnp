@@ -4,6 +4,7 @@
 ".\objects\lib_uart.o"
 ".\objects\pwm_moteur.o"
 ".\objects\reception_bluetooth.o"
+".\objects\module_rfid.o"
 ".\objects\buttons_mcb1700.o"
 ".\objects\glcd_fonts.o"
 ".\objects\glcd_mcb1700.o"
