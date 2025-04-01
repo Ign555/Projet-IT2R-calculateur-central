@@ -14,6 +14,6 @@
 .\objects\spi_lpc17xx.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_SPI.h
 .\objects\spi_lpc17xx.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_Common.h
 .\objects\spi_lpc17xx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\spi_lpc17xx.o: U:\Projet_voiture\RTE\Device\LPC1768\RTE_Device.h
-.\objects\spi_lpc17xx.o: U:\Projet_voiture\RTE\RTE_Components.h
+.\objects\spi_lpc17xx.o: C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\LPC1768\RTE_Device.h
+.\objects\spi_lpc17xx.o: C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\RTE_Components.h
 .\objects\spi_lpc17xx.o: C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver\GPIO_LPC17xx.h

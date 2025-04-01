@@ -19,6 +19,6 @@
 .\objects\baseuart.o: C:\Keil_v5\ARM\PACK\Keil\MDK-Middleware\7.0.0\Board\Board_GLCD.h
 .\objects\baseuart.o: C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\RTE_Driver\SSP_LPC17xx.h
 .\objects\baseuart.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Driver\Include\Driver_SPI.h
-.\objects\baseuart.o: U:\Projet_voiture\RTE\Device\LPC1768\RTE_Device.h
-.\objects\baseuart.o: U:\Projet_voiture\RTE\RTE_Components.h
+.\objects\baseuart.o: C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\Device\LPC1768\RTE_Device.h
+.\objects\baseuart.o: C:\Users\TEMP.GEII2.003\Documents\GitHub\Projet-IT2R-calculateur-central\RTE\RTE_Components.h
 .\objects\baseuart.o: C:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\3.0.0\Boards\Keil\MCB1700\Common\GLCD_Fonts.h
