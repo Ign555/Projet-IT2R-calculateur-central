@@ -23,17 +23,15 @@ int main(void) {
     LED_Initialize();
     ADC_Initialize();
     osKernelInitialize();
-	  ID_light = osThreadCreate ( osThread ( light_Task), NULL);
+    ID_light = osThreadCreate ( osThread ( light_Task), NULL);
     ID_humidity = osThreadCreate ( osThread ( humidity_Task), NULL);
     osKernelStart();
 }
 
 
 void light_Task(void *argument) {
-	 int * Envoie_l ;
-	 int AD_last_l;
-   LED_Initialize();
-   ADC_Initialize ();
+   int * Envoie_l ;
+   int AD_last_l;
    while(1) {
 	
 	   ADC_StartConversion();
@@ -48,20 +46,15 @@ void light_Task(void *argument) {
 	}
 }
 void humidity_Task(void *argument) {
-	 int * Envoie_h ;
-	 int AD_last_h;
-   LED_Initialize();
-   ADC_Initialize ();
+   int * Envoie_h ;
+   int AD_last_h;
    while(1) {
 		 
 		 ADC_StartConversion();
 		 while(ADC_ConversionDone());
 		 AD_last_h = ADC_GetValue();
-		 
-		 if (AD_last_h <= 200){
-	 	  	Envoie_h = osMailAlloc(ID_Humidiy2IHM, osWaitForever);
-		   	* Envoie_h = AD_last_h; // à modifier 
-		  	osMailPut(ID_Humidiy2IHM, Envoie_h);		 
-		 }
+	 	 Envoie_h = osMailAlloc(ID_Humidiy2IHM, osWaitForever);
+		 * Envoie_h = AD_last_h; // à modifier 
+		 osMailPut(ID_Humidiy2IHM, Envoie_h);		 
 	}
 }
