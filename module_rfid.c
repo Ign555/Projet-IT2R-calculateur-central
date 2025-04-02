@@ -2,8 +2,8 @@
 
 char bon_badge[14]={2,48,56,48,48,56,67,50,51,69,57,52,69,3};// les données du bon badge
 
-void Init_UART2(void){
-	Driver_USART2.Initialize(NULL);
+void Init_UART2(void (event_RFID)(uint32_t event)){
+	Driver_USART2.Initialize(event_RFID);
 	Driver_USART2.PowerControl(ARM_POWER_FULL);
 	Driver_USART2.Control(	ARM_USART_MODE_ASYNCHRONOUS |
 							ARM_USART_DATA_BITS_8		|
@@ -16,8 +16,8 @@ void Init_UART2(void){
 
 }	
 
-void RFID_init(){
-		Init_UART2();
+void RFID_init(void (event_RFID)(uint32_t event)){
+		Init_UART2(event_RFID);
 }
 void RFID_read(char *buff){
 	Driver_USART2.Receive(buff,14); // la fonction remplira jusqu'à 16 cases

@@ -14,6 +14,7 @@
 #include "pwm_moteur.h"
 #include "dfplayermini.h"
 #include "reception_bluetooth.h"
+#include "module_rfid.h"
 
 /********Debug include********/
 #ifdef DEBUG
@@ -30,14 +31,14 @@
  *---------------------------------------------------------------------------*/
 
 void TaskReceptionBT (void const * argument );
-void TaskRFID ( void const * argument );
+void TaskReadRFID ( void const * argument );
 void TaskDFPlayer ( void const * argument );
 void TaskMoteur (void const * argument );
 void TaskServoMoteur (void const * argument );
 
 osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_SERVOMOTEUR, ID_RECEPTIONBT;
 
-osThreadDef ( TaskRFID, osPriorityNormal, 1, 0);
+osThreadDef ( TaskReadRFID, osPriorityNormal, 1, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
 osThreadDef ( TaskReceptionBT, osPriorityNormal, 1, 0);
 osThreadDef ( TaskMoteur, osPriorityAboveNormal, 1, 0);
@@ -62,14 +63,14 @@ osMutexDef ( Mutex_UART );
  * Task ID & DEF - MAILS BOXS
  *---------------------------------------------------------------------------*/
 
-osMailQId ID_RFID2DFPlayer, ID_ETAT_MOT, ID_Lumiere2DFPlayer, ID_RB_JOYSTICK, ID_RB_BUTTON;
+osMailQId ID_SOUND2PLAY, ID_ETAT_MOT, ID_Lumiere2DFPlayer, ID_RB_JOYSTICK, ID_RB_BUTTON;
 /*
 osMailQDef(RFID2DFPlayer, 1, uint8_t); // obj une boite au lettre la plus petite possible 
 osMailQDef(ETAT_MOT, 1, uint8_t);
 osMailQDef(Lumiere, 1, uint8_t);
 */
 osMailQDef(rb_joystick, 8, JoystickPosition);
-
+osMailQDef(sound2play, 8, uint8_t);
 
 /*----------------------------------------------------------------------------
  * main: initialize and start the system
@@ -101,6 +102,9 @@ int main (void) {
 	//Bluetooth Reception Init
 	RB_init(RB_event);
 	
+	//RFID init
+	RFID_init(RFID_event);
+	
 	//Motor init process
 	osDelay(5000);
 	servo_moteur_set_duty(0.1);
@@ -121,13 +125,14 @@ int main (void) {
   
 	
 	ID_DFPlayer = osThreadCreate ( osThread ( TaskDFPlayer ), NULL);
-	ID_RFID = osThreadCreate ( osThread ( TaskRFID ), NULL);
+	ID_RFID = osThreadCreate ( osThread ( TaskReadRFID ), NULL);
 	ID_MOTEUR = osThreadCreate ( osThread ( TaskMoteur ), NULL);
 	ID_SERVOMOTEUR = osThreadCreate ( osThread ( TaskServoMoteur ), NULL);
 	ID_RECEPTIONBT = osThreadCreate ( osThread ( TaskReceptionBT ), NULL);
 	
 	//ID_Mutex_UART = osMutexCreate( osMutex( Mutex_UART));
 	ID_RB_JOYSTICK = osMailCreate(osMailQ(rb_joystick), NULL);
+	ID_SOUND2PLAY = osMailCreate(osMailQ(sound2play), NULL);
 	
   osKernelStart ();
 	
@@ -141,21 +146,25 @@ int main (void) {
  *---------------------------------------------------------------------------*/
 
 void TaskDFPlayer ( void const * argument ){
-	/*
-	uint8_t * Reception_RFID, * Reception_Manette, * Reception_Moteur, * Reception_Lumiere;
+	
+	uint8_t * Sound2Play, * Reception_Manette, * Reception_Moteur, * Reception_Lumiere;
 	
 	osEvent EV_RFID, EV_Manette, EV_Moteur, EV_Lumiere;
-	
-	uint8_t RFID, Manette, Moteur, Lumiere;
-	
-	LinkDFPlayer();
+	uint8_t sound;
 	
 	while (1){
-		EV_RFID = osMailGet(ID_RFID2DFPlayer, 10);
-		Reception_RFID = EV_RFID.value.p;
-		RFID = * Reception_RFID;
-		osMailFree(ID_ETAT_MOT, Reception_RFID);
+	
+		EV_RFID = osMailGet(ID_SOUND2PLAY, osWaitForever);
+		Sound2Play = EV_RFID.value.p;
+		sound = *Sound2Play;
 		
+		switch(sound){
+			case 1:
+				DFPlayer_play_in_folder(0x02, 0x03);
+					break;
+			
+		}
+		/*
 		EV_Moteur = osMailGet(ID_ETAT_MOT, 10);
 		Reception_Moteur = EV_Moteur.value.p;
 		Moteur = * Reception_Moteur;
@@ -205,10 +214,8 @@ void TaskDFPlayer ( void const * argument ){
 			Send_DFPlayer_Command( PAUSE, 0x00, 0x00);
 			tempo(5);
 			osMutexRelease(ID_Mutex_UART);
-		}
-	}*/
-	while(1){
-		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
+		}*/
+		osMailFree(ID_SOUND2PLAY, Sound2Play);
 	}
 }
 
@@ -219,7 +226,7 @@ void TaskDFPlayer ( void const * argument ){
 
 void TaskRFID ( void const * argument ){
 	/*
-	char BADGE[14] = {2,48,56,48,48,56,67,50,51,69,57,52,69,3};
+	
 	
 	uint8_t * Reception ;
 	uint8_t * Envoie ;
@@ -325,7 +332,7 @@ void TaskServoMoteur ( void const * argumsent ) {
 	
 }
 /*----------------------------------------------------------------------------
- * Task RECEPTIONBT - CB 
+ * Task RECEPTIONBT - CB  ( peut etre penser à flush le buffer au démarrage ) 
  *---------------------------------------------------------------------------*/
 
 void TaskReceptionBT (void const * argument ){
@@ -368,14 +375,25 @@ void TaskReceptionBT (void const * argument ){
 void TaskReadRFID (void const * argument ){
 	
 	//Sémaphore ou mutext à mettre
-	JoystickPosition *jp, jp_prev;
-	
+	uint8_t *son;
 	char buff_badge[14];
+	char badge_ouverture[14] = {2,48,56,48,48,56,67,50,51,69,57,52,69,3};
+	char texte[30];
 	
   while (1) {
+		son = osMailAlloc(ID_SOUND2PLAY, 100);
+		RFID_read(buff_badge);
+		#ifdef DEBUG
+			sprintf(texte,"badge : %s",buff_badge);
+			GLCD_DrawString(1,64,texte);
+			#endif
+		if(strcmp(buff_badge, badge_ouverture) == 0){
+			*son = 1;
+			osMailPut(ID_SOUND2PLAY, son);
+		}else{
+			osMailFree(ID_SOUND2PLAY, son);
+		}
 		
-		
-
 		
 	}
 	
@@ -392,7 +410,7 @@ void RB_event(uint32_t event){
 }
 void RFID_event(uint32_t event){
 	switch (event) {
-		case ARM_USART_EVENT_RECEIVE_COMPLETE : 	osSignalSet(ID_RECEPTIONBT, 0x01);
+		case ARM_USART_EVENT_RECEIVE_COMPLETE : 	osSignalSet(ID_RFID, 0x01);
 																							break;
 		default : break;
 	}	
