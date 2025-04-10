@@ -18,6 +18,7 @@ void Init_UART2(void (event_RFID)(uint32_t event)){
 
 void RFID_init(void (event_RFID)(uint32_t event)){
 		Init_UART2(event_RFID);
+		NVIC_SetPriority(UART2_IRQn,0);
 }
 void RFID_read(char *buff){
 	Driver_USART2.Receive(buff,14); // la fonction remplira jusqu'à 16 cases

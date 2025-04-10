@@ -15,6 +15,7 @@
 #include "dfplayermini.h"
 #include "reception_bluetooth.h"
 #include "module_rfid.h"
+#include <string.h>
 
 /********Debug include********/
 #ifdef DEBUG
@@ -34,15 +35,13 @@ void TaskReceptionBT (void const * argument );
 void TaskReadRFID ( void const * argument );
 void TaskDFPlayer ( void const * argument );
 void TaskMoteur (void const * argument );
-void TaskServoMoteur (void const * argument );
 
-osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_SERVOMOTEUR, ID_RECEPTIONBT;
+osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_RECEPTIONBT;
 
 osThreadDef ( TaskReadRFID, osPriorityNormal, 1, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
-osThreadDef ( TaskReceptionBT, osPriorityNormal, 1, 0);
-osThreadDef ( TaskMoteur, osPriorityAboveNormal, 1, 0);
-osThreadDef ( TaskServoMoteur, osPriorityNormal, 1, 0);
+osThreadDef ( TaskReceptionBT, osPriorityNormal, 4, 0);
+osThreadDef ( TaskMoteur, osPriorityNormal, 1, 0);
 
 /*----------------------------------------------------------------------------
  * Event/CB function prototype
@@ -53,12 +52,18 @@ void RFID_event(uint32_t event);
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MUTEX
  *---------------------------------------------------------------------------*/
-/*
-osMutexId ID_Mutex_PWM, ID_Mutex_UART;
+#ifdef DEBUG
+	osMutexId ID_mut_GLCD;
+	osMutexDef ( mut_GLCD );
+#endif
 
+
+osMutexId /*ID_Mutex_PWM,*/ ID_mut_UART;
+/*
 osMutexDef ( Mutex_PWM );
-osMutexDef ( Mutex_UART );
 */
+osMutexDef ( mut_UART );
+
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MAILS BOXS
  *---------------------------------------------------------------------------*/
@@ -69,19 +74,19 @@ osMailQDef(RFID2DFPlayer, 1, uint8_t); // obj une boite au lettre la plus petite
 osMailQDef(ETAT_MOT, 1, uint8_t);
 osMailQDef(Lumiere, 1, uint8_t);
 */
-osMailQDef(rb_joystick, 8, JoystickPosition);
+osMailQDef(rb_joystick, 50, JoystickPosition);
 osMailQDef(sound2play, 8, uint8_t);
 
 /*----------------------------------------------------------------------------
  * main: initialize and start the system
  *---------------------------------------------------------------------------*/
-
+ 
 int main (void) {
 	
 	osKernelInitialize ();
 	
 	
-	/********Init for debbuging (it means you can comment it dummy)********/
+	/********Init for debbuging********/
 	#ifdef DEBUG
 		GLCD_Initialize();
 		GLCD_ClearScreen();
@@ -92,18 +97,18 @@ int main (void) {
 	
 	//DF Player init
 	DFPlayer_init();
+
+	//Init Bluetooth Reception
+	RB_init(RB_event);
+	
+	//Init RFID
+	RFID_init(RFID_event);
 	
 	//Motor init
 	init_servo_moteur();
 	init_moteur();
 	moteur_set_direction(0);
 	servo_moteur_set_duty(0.075);
-	
-	//Bluetooth Reception Init
-	RB_init(RB_event);
-	
-	//RFID init
-	RFID_init(RFID_event);
 	
 	//Motor init process
 	osDelay(5000);
@@ -119,18 +124,17 @@ int main (void) {
 	DFPlayer_set_volume(30);
 	DFPlayer_play_in_folder(0x02, 0x02);
 	
-	//Init UART
-	//Init_UART();
-	
-  
-	
+	//Create task
 	ID_DFPlayer = osThreadCreate ( osThread ( TaskDFPlayer ), NULL);
 	ID_RFID = osThreadCreate ( osThread ( TaskReadRFID ), NULL);
 	ID_MOTEUR = osThreadCreate ( osThread ( TaskMoteur ), NULL);
-	ID_SERVOMOTEUR = osThreadCreate ( osThread ( TaskServoMoteur ), NULL);
 	ID_RECEPTIONBT = osThreadCreate ( osThread ( TaskReceptionBT ), NULL);
 	
-	//ID_Mutex_UART = osMutexCreate( osMutex( Mutex_UART));
+	//Create mutex
+	ID_mut_GLCD = osMutexCreate( osMutex( mut_GLCD ));
+	ID_mut_UART = osMutexCreate( osMutex( mut_UART ));
+	
+	//Create Mail Boxes
 	ID_RB_JOYSTICK = osMailCreate(osMailQ(rb_joystick), NULL);
 	ID_SOUND2PLAY = osMailCreate(osMailQ(sound2play), NULL);
 	
@@ -151,19 +155,27 @@ void TaskDFPlayer ( void const * argument ){
 	
 	osEvent EV_RFID, EV_Manette, EV_Moteur, EV_Lumiere;
 	uint8_t sound;
-	
+		
 	while (1){
-	
+
 		EV_RFID = osMailGet(ID_SOUND2PLAY, osWaitForever);
 		Sound2Play = EV_RFID.value.p;
-		sound = *Sound2Play;
 		
-		switch(sound){
+		switch(*Sound2Play){
 			case 1:
 				DFPlayer_play_in_folder(0x02, 0x03);
 					break;
 			
 		}
+		
+		#ifdef DEBUG
+		
+			osMutexWait(ID_mut_GLCD, osWaitForever);
+			GLCD_DrawString(1,128,"son");
+			osMutexRelease(ID_mut_GLCD);
+		
+		#endif
+		
 		/*
 		EV_Moteur = osMailGet(ID_ETAT_MOT, 10);
 		Reception_Moteur = EV_Moteur.value.p;
@@ -219,58 +231,6 @@ void TaskDFPlayer ( void const * argument ){
 	}
 }
 
-
- /*----------------------------------------------------------------------------
-  * Task RFID
-  *---------------------------------------------------------------------------*/
-
-void TaskRFID ( void const * argument ){
-	/*
-	
-	
-	uint8_t * Reception ;
-	uint8_t * Envoie ;
-	
-	uint8_t ETAT_MOT;
-	
-	osEvent EV_Reception;
-	
-	char * Lecture;
-	
-	while (1){
-		
-		osMutexWait(ID_Mutex_UART, osWaitForever);
-		Lecture = Read_RFID();
-		osMutexRelease(ID_Mutex_UART);
-		
-		EV_Reception = osMailGet(ID_ETAT_MOT, 10);
-		Reception = EV_Reception.value.p;
-		ETAT_MOT = * Reception;
-		osMailFree(ID_ETAT_MOT, Reception);
-		
-		
-		
-		if( 0 == strcmp(BADGE,Lecture)){
-			
-			Envoie = osMailAlloc(ID_RFID2DFPlayer, osWaitForever);
-			* Envoie = 1;
-			osMailPut(ID_RFID2DFPlayer, Envoie);
-			
-			osSignalWait( 0x0001, osWaitForever);
-		}
-		
-		if ( 1 == ETAT_MOT ){
-			
-			ETAT_MOT = 0;
-			osSignalWait( 0x0001, osWaitForever);
-			
-		}		
-	}*/
-	while(1){
-		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
-	}
-}
-
 /*----------------------------------------------------------------------------
  * Task MOTEUR
  *---------------------------------------------------------------------------*/
@@ -281,19 +241,13 @@ void TaskMoteur ( void const * argumsent ) {
 	osEvent mailJoystick;
 	float motor_duty_cycle = 0;
 	char tab[9], texte[30];
-	/*
-	Servo_Mot_Initialize();
-	Mot_Initialize();
-	
-	Mot_Set_Duty(0.9); */
-	//Servo_Mot_Set_Duty(0.1);
 	
 	while (1){
 		
 		mailJoystick = osMailGet(ID_RB_JOYSTICK, osWaitForever);
 		jp = mailJoystick.value.p;
 		
-		
+		//To much magic number...
 		if(jp->y  < 144){
 				moteur_set_direction(1);
 				motor_duty_cycle = (1 - ((jp->y+111)/255.0));
@@ -308,26 +262,8 @@ void TaskMoteur ( void const * argumsent ) {
 		
 		servo_moteur_set_duty(0.075 + ((127 - (jp->x-15))/255.0)*0.025);
 		
-		//moteur_set_duty(0.5);
 		osMailFree(ID_RB_JOYSTICK, jp);
-//		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
-	}
-	
-}
-/*----------------------------------------------------------------------------
- * Task SERVOMOTEUR
- *---------------------------------------------------------------------------*/
 
-void TaskServoMoteur ( void const * argumsent ) {
-	/*
-	Servo_Mot_Initialize();
-	Mot_Initialize();
-	
-	Mot_Set_Duty(0.9); */
-	//Servo_Mot_Set_Duty(0.1);
-	
-	while (1){
-		osSignalWait(0x01, osWaitForever);		// sommeil fin emission
 	}
 	
 }
@@ -345,19 +281,35 @@ void TaskReceptionBT (void const * argument ){
 	
   while (1) {
 		
+		#ifdef DEBUG
+		
+			osMutexWait(ID_mut_GLCD, osWaitForever);
+			GLCD_DrawString(100,92,"bt");
+			osMutexRelease(ID_mut_GLCD);
+		
+		#endif
+		
+		osSignalWait(0x01, osWaitForever);
+		
 		jp = osMailAlloc(ID_RB_JOYSTICK, 100);
 		
+		osMutexWait(ID_mut_UART, osWaitForever);
 		if(RB_get_data(&jp->x, &jp->y, &b) < 0){
 			//Anti sacades
 			jp->x = jp_prev.x;
 			jp->y = jp_prev.y;
 		}
+		osMutexRelease(ID_mut_UART);
 		
 		#ifdef DEBUG
+		
+			osMutexWait(ID_mut_GLCD, osWaitForever);
 			sprintf(texte,"Jx: %3d Jy: %3d",jp->x, jp->y);
 			GLCD_DrawString(1,1,texte);
 			sprintf(texte,"B: %3d", b);
 			GLCD_DrawString(1,32,texte);
+			osMutexRelease(ID_mut_GLCD);
+		
 		#endif
 		
 		jp_prev.x = jp->x;
@@ -381,19 +333,39 @@ void TaskReadRFID (void const * argument ){
 	char texte[30];
 	
   while (1) {
-		son = osMailAlloc(ID_SOUND2PLAY, 100);
-		RFID_read(buff_badge);
+		
 		#ifdef DEBUG
+		
+			osMutexWait(ID_mut_GLCD, osWaitForever);
+			GLCD_DrawString(1,92,"rfid");
+			osMutexRelease(ID_mut_GLCD);
+		
+		#endif
+		
+		osSignalWait(0x02, osWaitForever);
+		
+		son = osMailAlloc(ID_SOUND2PLAY, 100);
+		
+		osMutexWait(ID_mut_UART, osWaitForever);
+		RFID_read(buff_badge);
+		osMutexRelease(ID_mut_UART);
+		
+		#ifdef DEBUG
+		
+			osMutexWait(ID_mut_GLCD, osWaitForever);
 			sprintf(texte,"badge : %s",buff_badge);
 			GLCD_DrawString(1,64,texte);
-			#endif
-		if(strcmp(buff_badge, badge_ouverture) == 0){
+			osMutexRelease(ID_mut_GLCD);
+		
+		#endif
+		
+		if(strcmp(buff_badge, badge_ouverture)==0){
 			*son = 1;
 			osMailPut(ID_SOUND2PLAY, son);
 		}else{
-			osMailFree(ID_SOUND2PLAY, son);
+			*son = 0;
+			osMailPut(ID_SOUND2PLAY, son);
 		}
-		
 		
 	}
 	
@@ -402,16 +374,16 @@ void TaskReadRFID (void const * argument ){
  * UART Event function
  *---------------------------------------------------------------------------*/
 void RB_event(uint32_t event){
-	switch (event) {
-		case ARM_USART_EVENT_RECEIVE_COMPLETE : 	osSignalSet(ID_RECEPTIONBT, 0x01);
-																							break;
-		default : break;
-	}	
+	
+//	if(event & ARM_USART_EVENT_RECEIVE_COMPLETE){ //Pourquoi les if marche pas bordel ???!?!?
+			osSignalSet(ID_RECEPTIONBT, 0x01);
+//	}
+
 }
 void RFID_event(uint32_t event){
-	switch (event) {
-		case ARM_USART_EVENT_RECEIVE_COMPLETE : 	osSignalSet(ID_RFID, 0x01);
-																							break;
-		default : break;
-	}	
+	
+//	if(event & ARM_USART_EVENT_RECEIVE_COMPLETE){
+			osSignalSet(ID_RFID, 0x02);
+//	}
+	
 }

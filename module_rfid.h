@@ -1,4 +1,7 @@
+#include "osObjects.h"                      // RTOS object definitions
+#include "cmsis_os.h"                   // CMSIS RTOS header file
 #include "Driver_USART.h"               // ::CMSIS Driver:USART
+#include "LPC17xx.h"                    // Device header
 
 #ifndef __MODULE_RFID_H__
 #define __MODULE_RFID_H__
