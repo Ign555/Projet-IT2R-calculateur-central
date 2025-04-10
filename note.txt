@@ -8,3 +8,5 @@ UART3 : P0.0 DFPlayerMini
 
 
 Endormir les autres taches diminues le ping de la reception.
+
+P2.10 IRQ AI -> PWM Mot == 0

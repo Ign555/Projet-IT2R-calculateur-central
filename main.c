@@ -27,6 +27,16 @@
 	extern GLCD_FONT GLCD_Font_6x8;
 	extern GLCD_FONT GLCD_Font_16x24;
 #endif
+
+/********IRQ Fonction********/
+
+void EINT0_IRQHandler(void){
+	
+	LPC_SC->EXTINT = (1<<0);
+	moteur_set_duty(0);
+	
+}
+
 /*----------------------------------------------------------------------------
  * Task ID & DEF - RTOS
  *---------------------------------------------------------------------------*/
@@ -82,6 +92,13 @@ osMailQDef(sound2play, 50, uint8_t);
  *---------------------------------------------------------------------------*/
  
 int main (void) {
+	
+	/*********Fonction IRQ*************/
+	LPC_PINCON->PINSEL4 |= (1<<20);
+	LPC_SC->EXTMODE |= (1<<0);
+	LPC_SC->EXTPOLAR |= (1<<0);
+	NVIC_SetPriority(EINT0_IRQn, 1);
+	NVIC_EnableIRQ(EINT0_IRQn);
 	
 	osKernelInitialize ();
 	
