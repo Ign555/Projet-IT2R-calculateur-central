@@ -16,6 +16,13 @@
 #include "reception_bluetooth.h"
 #include "module_rfid.h"
 #include <string.h>
+#include "Driver_CAN.h"                 // ::CMSIS Driver:CAN
+
+/*********CAN Set************/
+void InitCan1 (void);
+ARM_CAN_MSG_INFO   rx_msg_info;
+uint8_t CANdata_buf[8];
+extern   ARM_DRIVER_CAN         Driver_CAN1;
 
 /********Debug include********/
 #ifdef DEBUG
@@ -45,19 +52,25 @@ void TaskReceptionBT (void const * argument );
 void TaskReadRFID ( void const * argument );
 void TaskDFPlayer ( void const * argument );
 void TaskMoteur (void const * argument );
+void TaskCAN_Read ( void const * argument );
+void TaskCAN_Send ( void const * arguement );
 
-osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_RECEPTIONBT;
+osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_RECEPTIONBT, ID_CAN_Read, ID_CAN_Send;
 
 osThreadDef ( TaskReadRFID, osPriorityNormal, 10, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
 osThreadDef ( TaskReceptionBT, osPriorityNormal, 4, 0);
 osThreadDef ( TaskMoteur, osPriorityAboveNormal, 1, 0);
+osThreadDef ( TaskCAN_Read, osPriorityHigh, 1, 0);
+osThreadDef ( TaskCAN_Send, osPriorityHigh, 1, 0);
 
 /*----------------------------------------------------------------------------
  * Event/CB function prototype
  *---------------------------------------------------------------------------*/
+
 void RB_event(uint32_t event);
 void RFID_event(uint32_t event);
+void CAN1_Callback(uint32_t obj_idx, uint32_t event);
 
 /*----------------------------------------------------------------------------
  * Task ID & DEF - MUTEX
@@ -111,6 +124,9 @@ int main (void) {
 		GLCD_SetForegroundColor(GLCD_COLOR_BLACK);
 	#endif
 	/********Normal Init********/
+
+	//CAN Init
+	void InitCan1 (void)
 	
 	//DF Player init
 	DFPlayer_init();
@@ -146,7 +162,8 @@ int main (void) {
 	ID_RFID = osThreadCreate ( osThread ( TaskReadRFID ), NULL);
 	ID_MOTEUR = osThreadCreate ( osThread ( TaskMoteur ), NULL);
 	ID_RECEPTIONBT = osThreadCreate ( osThread ( TaskReceptionBT ), NULL);
-	
+	ID_CAN_Read = osThreadCreate ( osThread ( TaskCAN_Read), NULL);
+	ID_CAN_Send = osThreadCreate ( osThread ( TaskCAN_Send), NULL);
 	//Create mutex
 	ID_mut_GLCD = osMutexCreate( osMutex( mut_GLCD ));
 	ID_mut_UART = osMutexCreate( osMutex( mut_UART ));
@@ -283,7 +300,7 @@ void TaskMoteur ( void const * argumsent ) {
 	
 }
 /*----------------------------------------------------------------------------
- * Task RECEPTIONBT - CB  ( peut etre penser ‡ flush le buffer au dÈmarrage ) 
+ * Task RECEPTIONBT - CB  ( peut etre penser √† flush le buffer au d√©marrage ) 
  *---------------------------------------------------------------------------*/
 
 void TaskReceptionBT (void const * argument ){
@@ -311,7 +328,7 @@ void TaskReceptionBT (void const * argument ){
 		
 		
 		//Acquisition
-		if(RB_get_data(manette) < 0){ //Si l'acquisition des donnÈes s'est mal passÈ
+		if(RB_get_data(manette) < 0){ //Si l'acquisition des donn√©es s'est mal pass√©
 			//Anti sacades
 			manette->jx = manette_prev.jx;
 			manette->jy = manette_prev.jy;
@@ -339,20 +356,20 @@ void TaskReceptionBT (void const * argument ){
 				*son = 0;
 		}
 		
-		//On sauvegarde la position prÈcÈdente pour Èviter les sacades 
+		//On sauvegarde la position pr√©c√©dente pour √©viter les sacades 
 		manette_prev.jx = manette->jx;
 		manette_prev.jy = manette->jy;
 		manette_prev.b = manette->b;
 		
 		
-		//Envoie du son ‡ jouer
+		//Envoie du son √† jouer
 		if(*son == 1){
 			osMailPut(ID_SOUND2PLAY, son);
 		}else{
 			osMailFree(ID_SOUND2PLAY, son);
 		}
 		
-		//Envoie coordonnÈe du joystick
+		//Envoie coordonn√©e du joystick
 		osMailPut(ID_RB_JOYSTICK, manette);
 
 		//osSignalClear(ID_RECEPTIONBT, 0x01);
@@ -365,7 +382,7 @@ void TaskReceptionBT (void const * argument ){
 
 void TaskReadRFID (void const * argument ){
 	
-	//SÈmaphore ou mutext ‡ mettre
+	//S√©maphore ou mutext √† mettre
 	uint8_t *son;
 	char buff_badge[65];
 	char badge_ouverture[15] = {2,48,56,48,48,56,67,50,51,69,57,52,69,3, '\0'};
@@ -422,4 +439,81 @@ void RFID_event(uint32_t event){
 			osSignalSet(ID_RFID, 0x02);
 //	}
 	
+}
+
+void CAN1_callback(uint32_t obj_idx, uint32_t event)
+{	
+
+    switch (event)
+    {
+    case ARM_CAN_EVENT_RECEIVE:
+        /*  Message was received successfully by the obj_idx object. */
+				Driver_CAN1.MessageRead(0, &rx_msg_info, CANdata_buf, 1);
+       osSignalSet(ID_CANthreadR, 0x01);
+
+        break;
+    }
+}
+
+void InitCan1 (void) {
+	Driver_CAN1.Initialize(NULL,myCAN1_callback);
+	Driver_CAN1.PowerControl(ARM_POWER_FULL);
+	
+	Driver_CAN1.SetMode(ARM_CAN_MODE_INITIALIZATION);
+	Driver_CAN1.SetBitrate( 
+	ARM_CAN_BITRATE_NOMINAL,
+	125000,
+	ARM_CAN_BIT_PROP_SEG(5U)   |
+  ARM_CAN_BIT_PHASE_SEG1(1U) |
+  ARM_CAN_BIT_PHASE_SEG2(1U) |
+  ARM_CAN_BIT_SJW(1U));
+                          
+	Driver_CAN1.ObjectSetFilter( 0, ARM_CAN_FILTER_ID_EXACT_ADD , ARM_CAN_STANDARD_ID(0x161), 0) ;
+	Driver_CAN1.ObjectSetFilter( 0, ARM_CAN_FILTER_ID_EXACT_ADD , ARM_CAN_STANDARD_ID(0x0b6), 0) ;
+		
+	Driver_CAN1.ObjectConfigure(0,ARM_CAN_OBJ_RX);				// Objet 0 du CAN1 pour r√©ception
+	
+	Driver_CAN1.SetMode(ARM_CAN_MODE_NORMAL);					// fin init
+}
+
+void TaskCAN_Send(void const *argument)
+{
+	ARM_CAN_MSG_INFO                tx_msg_info;
+	uint8_t data_buf[8];
+	char in, *inptr;
+	osEvent GotADC;
+
+	tx_msg_info.id = ARM_CAN_STANDARD_ID (0x0b6);
+	tx_msg_info.rtr = 0; // 0 = trame DATA
+	data_buf [0] = 0xAA; //init data to send
+	
+	while (1) {
+		GotADC = osMailGet(ID_CAN1, osWaitForever);
+		inptr = GotADC.value.p;
+		in = *inptr;
+		osMailFree(ID_CAN1, inptr);
+
+		data_buf[0] = in;//apply value
+		Driver_CAN2.MessageSend(1, &tx_msg_info, data_buf, 1);//send
+
+		osSignalWait(0x02, osWaitForever);		// sommeil en attente fin emission
+	}		
+}
+
+void CANthread_Read(void const *argument)
+{
+	ARM_CAN_MSG_INFO   rx_msg_info;
+	uint8_t data_buf[8];
+	char texte[24], buff;
+		
+	while(1)
+	{		
+		osSignalWait(0x01, osWaitForever);		// sommeil en attente r√©ception
+		
+		Driver_CAN1.MessageRead(0, &rx_msg_info, data_buf, 1);
+		buff = data_buf[0];
+		sprintf(texte,"ID: %d Rx: %d", 0x0b6, buff);//STM ID
+		GLCD_DrawString(50,150,texte);
+
+	}
 }
