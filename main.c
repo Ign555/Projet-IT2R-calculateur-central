@@ -75,7 +75,7 @@ osMailQDef(ETAT_MOT, 1, uint8_t);
 osMailQDef(Lumiere, 1, uint8_t);
 */
 osMailQDef(rb_joystick, 50, JoystickPosition);
-osMailQDef(sound2play, 8, uint8_t);
+osMailQDef(sound2play, 50, uint8_t);
 
 /*----------------------------------------------------------------------------
  * main: initialize and start the system
@@ -316,7 +316,7 @@ void TaskReceptionBT (void const * argument ){
 		jp_prev.y = jp->y;
 		
 		osMailPut(ID_RB_JOYSTICK, jp);
-		
+		osSignalClear(ID_RECEPTIONBT, 0x01);
 	}
 	
 }
@@ -344,7 +344,7 @@ void TaskReadRFID (void const * argument ){
 		
 		osSignalWait(0x02, osWaitForever);
 		
-		son = osMailAlloc(ID_SOUND2PLAY, 100);
+		son = osMailAlloc(ID_SOUND2PLAY, osWaitForever);
 		
 		osMutexWait(ID_mut_UART, osWaitForever);
 		RFID_read(buff_badge);
@@ -363,9 +363,10 @@ void TaskReadRFID (void const * argument ){
 			*son = 1;
 			osMailPut(ID_SOUND2PLAY, son);
 		}else{
-			*son = 0;
-			osMailPut(ID_SOUND2PLAY, son);
+			osMailFree(ID_SOUND2PLAY, son);
 		}
+		
+		osSignalClear(ID_RFID, 0x02);
 		
 	}
 	
