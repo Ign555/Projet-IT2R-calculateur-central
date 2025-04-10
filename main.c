@@ -38,10 +38,10 @@ void TaskMoteur (void const * argument );
 
 osThreadId ID_RFID, ID_DFPlayer, ID_MOTEUR, ID_RECEPTIONBT;
 
-osThreadDef ( TaskReadRFID, osPriorityNormal, 1, 0);
+osThreadDef ( TaskReadRFID, osPriorityNormal, 10, 0);
 osThreadDef ( TaskDFPlayer, osPriorityNormal, 1, 0);
 osThreadDef ( TaskReceptionBT, osPriorityNormal, 4, 0);
-osThreadDef ( TaskMoteur, osPriorityNormal, 1, 0);
+osThreadDef ( TaskMoteur, osPriorityAboveNormal, 1, 0);
 
 /*----------------------------------------------------------------------------
  * Event/CB function prototype
@@ -74,7 +74,7 @@ osMailQDef(RFID2DFPlayer, 1, uint8_t); // obj une boite au lettre la plus petite
 osMailQDef(ETAT_MOT, 1, uint8_t);
 osMailQDef(Lumiere, 1, uint8_t);
 */
-osMailQDef(rb_joystick, 50, JoystickPosition);
+osMailQDef(rb_joystick, 8, Manette);
 osMailQDef(sound2play, 50, uint8_t);
 
 /*----------------------------------------------------------------------------
@@ -151,15 +151,13 @@ int main (void) {
 
 void TaskDFPlayer ( void const * argument ){
 	
-	uint8_t * Sound2Play, * Reception_Manette, * Reception_Moteur, * Reception_Lumiere;
-	
-	osEvent EV_RFID, EV_Manette, EV_Moteur, EV_Lumiere;
-	uint8_t sound;
+	osEvent EV_SON;
+	uint8_t *Sound2Play;
 		
 	while (1){
 
-		EV_RFID = osMailGet(ID_SOUND2PLAY, osWaitForever);
-		Sound2Play = EV_RFID.value.p;
+		EV_SON = osMailGet(ID_SOUND2PLAY, osWaitForever);
+		Sound2Play = EV_SON.value.p;
 		
 		switch(*Sound2Play){
 			case 1:
@@ -237,32 +235,32 @@ void TaskDFPlayer ( void const * argument ){
 
 void TaskMoteur ( void const * argumsent ) {
 	
-	JoystickPosition *jp;
+	Manette *manette;
 	osEvent mailJoystick;
 	float motor_duty_cycle = 0;
-	char tab[9], texte[30];
+	char texte[30];
 	
 	while (1){
 		
 		mailJoystick = osMailGet(ID_RB_JOYSTICK, osWaitForever);
-		jp = mailJoystick.value.p;
+		manette = mailJoystick.value.p;
 		
 		//To much magic number...
-		if(jp->y  < 144){
+		if(manette->jy  < 144){
 				moteur_set_direction(1);
-				motor_duty_cycle = (1 - ((jp->y+111)/255.0));
-		}else if(jp->y > 192){
+				motor_duty_cycle = (1 - ((manette->jy+111)/255.0));
+		}else if(manette->jy > 192){
 				moteur_set_direction(0);
-				motor_duty_cycle = 0.5*jp->y/255.0;
+				motor_duty_cycle = 2*(manette->jy-192)/255.0;
 		}else{
 				motor_duty_cycle = 0;
 		}
 		
 		moteur_set_duty(motor_duty_cycle);
 		
-		servo_moteur_set_duty(0.075 + ((127 - (jp->x-15))/255.0)*0.025);
+		servo_moteur_set_duty(0.075 + ((127 - (manette->jx-15))/255.0)*0.025);
 		
-		osMailFree(ID_RB_JOYSTICK, jp);
+		osMailFree(ID_RB_JOYSTICK, manette);
 
 	}
 	
@@ -273,12 +271,11 @@ void TaskMoteur ( void const * argumsent ) {
 
 void TaskReceptionBT (void const * argument ){
 	
-	//Sémaphore ou mutext à mettre
-	JoystickPosition *jp, jp_prev;
+	Manette *manette, manette_prev;
+	uint8_t *son;
 	
-	char tab[9], texte[30];
-	uint8_t b;
-	
+	char texte[30];
+
   while (1) {
 		
 		#ifdef DEBUG
@@ -289,34 +286,59 @@ void TaskReceptionBT (void const * argument ){
 		
 		#endif
 		
-		osSignalWait(0x01, osWaitForever);
+		//Lecture continue pour limiter la latence ??
+		//osSignalWait(0x01, osWaitForever);
 		
-		jp = osMailAlloc(ID_RB_JOYSTICK, 100);
+		manette = osMailAlloc(ID_RB_JOYSTICK, 100);
+		son = osMailAlloc(ID_SOUND2PLAY, 100);
 		
-		osMutexWait(ID_mut_UART, osWaitForever);
-		if(RB_get_data(&jp->x, &jp->y, &b) < 0){
+		
+		//Acquisition
+		if(RB_get_data(manette) < 0){ //Si l'acquisition des données s'est mal passé
 			//Anti sacades
-			jp->x = jp_prev.x;
-			jp->y = jp_prev.y;
+			manette->jx = manette_prev.jx;
+			manette->jy = manette_prev.jy;
+			manette->b = manette_prev.b;
 		}
-		osMutexRelease(ID_mut_UART);
 		
+		//Affichage pour debug
 		#ifdef DEBUG
 		
 			osMutexWait(ID_mut_GLCD, osWaitForever);
-			sprintf(texte,"Jx: %3d Jy: %3d",jp->x, jp->y);
+			sprintf(texte,"Jx: %3d Jy: %3d",manette->jx, manette->jy);
 			GLCD_DrawString(1,1,texte);
-			sprintf(texte,"B: %3d", b);
+			sprintf(texte,"B: %3d", manette->b);
 			GLCD_DrawString(1,32,texte);
 			osMutexRelease(ID_mut_GLCD);
 		
 		#endif
 		
-		jp_prev.x = jp->x;
-		jp_prev.y = jp->y;
+		//Traitement
 		
-		osMailPut(ID_RB_JOYSTICK, jp);
-		osSignalClear(ID_RECEPTIONBT, 0x01);
+		//Son
+		if(manette->b == 0x02 && manette_prev.b != manette->b){
+				*son = 1;				
+		}else{
+				*son = 0;
+		}
+		
+		//On sauvegarde la position précédente pour éviter les sacades 
+		manette_prev.jx = manette->jx;
+		manette_prev.jy = manette->jy;
+		manette_prev.b = manette->b;
+		
+		
+		//Envoie du son à jouer
+		if(*son == 1){
+			osMailPut(ID_SOUND2PLAY, son);
+		}else{
+			osMailFree(ID_SOUND2PLAY, son);
+		}
+		
+		//Envoie coordonnée du joystick
+		osMailPut(ID_RB_JOYSTICK, manette);
+
+		//osSignalClear(ID_RECEPTIONBT, 0x01);
 	}
 	
 }
@@ -328,8 +350,8 @@ void TaskReadRFID (void const * argument ){
 	
 	//Sémaphore ou mutext à mettre
 	uint8_t *son;
-	char buff_badge[14];
-	char badge_ouverture[14] = {2,48,56,48,48,56,67,50,51,69,57,52,69,3};
+	char buff_badge[65];
+	char badge_ouverture[15] = {2,48,56,48,48,56,67,50,51,69,57,52,69,3, '\0'};
 	char texte[30];
 	
   while (1) {
@@ -342,19 +364,15 @@ void TaskReadRFID (void const * argument ){
 		
 		#endif
 		
-		osSignalWait(0x02, osWaitForever);
-		
 		son = osMailAlloc(ID_SOUND2PLAY, osWaitForever);
 		
-		osMutexWait(ID_mut_UART, osWaitForever);
 		RFID_read(buff_badge);
-		osMutexRelease(ID_mut_UART);
 		
 		#ifdef DEBUG
 		
 			osMutexWait(ID_mut_GLCD, osWaitForever);
-			sprintf(texte,"badge : %s",buff_badge);
-			GLCD_DrawString(1,64,texte);
+			sprintf(texte,"b:%s",buff_badge);
+			GLCD_DrawString(0,64,texte);
 			osMutexRelease(ID_mut_GLCD);
 		
 		#endif

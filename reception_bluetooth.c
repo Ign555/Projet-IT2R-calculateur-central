@@ -16,7 +16,7 @@ void RB_init(void (event_UART)(uint32_t event)){
 	Init_UART1(event_UART);
 	NVIC_SetPriority(UART1_IRQn,2);
 }
-int RB_get_data(uint8_t *jx, uint8_t *jy, uint8_t *b){
+int RB_get_data(Manette *manette){
 	
 	uint8_t tab[9];
 	
@@ -24,9 +24,9 @@ int RB_get_data(uint8_t *jx, uint8_t *jy, uint8_t *b){
 	osSignalWait(0x01, osWaitForever);	// sommeil attente reception
 	
 	if(tab[0] == 's' && tab[7] == 'e'){
-		*jx = tab[2];
-		*jy = tab[4];
-		*b = tab[6];
+		manette->jx = tab[2];
+		manette->jy = tab[4];
+		manette->b = tab[6];
 		return 0;
 	}else{
 		return -1;

@@ -15,12 +15,29 @@ void Init_UART2(void (event_RFID)(uint32_t event)){
 	Driver_USART2.Control(ARM_USART_CONTROL_RX,1);
 
 }	
-
+void _RFID_flush(){
+		uint8_t dummy;
+		while (Driver_USART2.GetStatus().rx_busy == 1) {
+				Driver_USART2.Receive(&dummy, 1); // Lire et ignorer les données
+		}
+}
 void RFID_init(void (event_RFID)(uint32_t event)){
+		
 		Init_UART2(event_RFID);
 		NVIC_SetPriority(UART2_IRQn,0);
+	
+		//Flush RFID UART
+		_RFID_flush();
+		
 }
 void RFID_read(char *buff){
-	Driver_USART2.Receive(buff,14); // la fonction remplira jusqu'à 16 cases
-	while (Driver_USART2.GetRxCount() <14 ) ; // on attend que 16 cases soient pleine	
+	
+	int i = 0;
+	osSignalWait(0x02, osWaitForever);
+	//Driver_USART2.Receive(buff,64); // la fonction remplira jusqu'à 14 cases
+	while (Driver_USART2.GetStatus().rx_busy == 1) {
+				Driver_USART2.Receive(buff + i, 1); // Lire et ignorer les données
+				i++;
+		}
+	_RFID_flush();
 }
