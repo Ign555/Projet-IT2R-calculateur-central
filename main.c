@@ -267,7 +267,7 @@ void TaskDFPlayer ( void const * argument ){
  * Task MOTEUR
  *---------------------------------------------------------------------------*/
 
-void TaskMoteur ( void const * argumsent ) {
+void TaskMoteur ( void const * argument ) {
 	
 	Manette *manette;
 	osEvent mailJoystick;
@@ -440,14 +440,14 @@ void RFID_event(uint32_t event){
 //	}
 	
 }
-
+/*
 void CAN1_callback(uint32_t obj_idx, uint32_t event)
 {	
 
     switch (event)
     {
     case ARM_CAN_EVENT_RECEIVE:
-        /*  Message was received successfully by the obj_idx object. */
+        /*  Message was received successfully by the obj_idx object. 
 				Driver_CAN1.MessageRead(0, &rx_msg_info, CANdata_buf, 1);
        osSignalSet(ID_CANthreadR, 0x01);
 
@@ -483,7 +483,7 @@ void TaskCAN_Send(void const *argument)
 	char in, *inptr;
 	osEvent GotADC;
 
-	tx_msg_info.id = ARM_CAN_STANDARD_ID (0x0b6);
+	tx_msg_info.id = ARM_CAN_STANDARD_ID (0x401);
 	tx_msg_info.rtr = 0; // 0 = trame DATA
 	data_buf [0] = 0xAA; //init data to send
 	
@@ -510,10 +510,7 @@ void CANthread_Read(void const *argument)
 	{		
 		osSignalWait(0x01, osWaitForever);		// sommeil en attente réception
 		
-		Driver_CAN1.MessageRead(0, &rx_msg_info, data_buf, 1);
-		buff = data_buf[0];
-		sprintf(texte,"ID: %d Rx: %d", 0x0b6, buff);//STM ID
-		GLCD_DrawString(50,150,texte);
 
 	}
 }
+*/
